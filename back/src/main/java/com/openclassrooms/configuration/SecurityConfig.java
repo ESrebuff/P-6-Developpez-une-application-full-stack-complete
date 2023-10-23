@@ -30,15 +30,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(authRequest -> authRequest
                                                 .requestMatchers(
                                                                 "/api/auth/login",
-                                                                "/api/auth/register",
-                                                                "/swagger-ui/**",
-                                                                "/v3/api-docs",
-                                                                "/v3/api-docs/**",
-                                                                "/swagger-resources/**",
-                                                                "/swagger-ui.html",
-                                                                "api-docs/**",
-                                                                "/webjars/**",
-                                                                "/picture/**")
+                                                                "/api/auth/register")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sessionManager -> sessionManager
