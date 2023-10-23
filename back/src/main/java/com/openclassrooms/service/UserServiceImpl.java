@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.mappers.dtos.UserDto;
-import com.openclassrooms.modele.User;
+import com.openclassrooms.model.User;
 import com.openclassrooms.repository.UserRepository;
 
 import jakarta.annotation.PostConstruct;

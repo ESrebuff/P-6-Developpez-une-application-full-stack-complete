@@ -1,4 +1,4 @@
-package com.openclassrooms.modele;
+package com.openclassrooms.model;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

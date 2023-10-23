@@ -1,4 +1,4 @@
-package com.openclassrooms.modele;
+package com.openclassrooms.model;
 
 import jakarta.persistence.*;
 import lombok.*;

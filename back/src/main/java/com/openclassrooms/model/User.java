@@ -1,4 +1,4 @@
-package com.openclassrooms.modele;
+package com.openclassrooms.model;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

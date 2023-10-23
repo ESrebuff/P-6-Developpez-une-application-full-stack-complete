@@ -10,8 +10,8 @@ import com.openclassrooms.jsonWebToken.JwtService;
 import com.openclassrooms.mappers.dtos.AuthResponseDto;
 import com.openclassrooms.mappers.dtos.LoginRequestDto;
 import com.openclassrooms.mappers.dtos.RegisterRequestDto;
-import com.openclassrooms.modele.Role;
-import com.openclassrooms.modele.User;
+import com.openclassrooms.model.Role;
+import com.openclassrooms.model.User;
 import com.openclassrooms.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
