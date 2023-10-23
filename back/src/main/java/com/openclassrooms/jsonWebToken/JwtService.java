@@ -1,4 +1,4 @@
-package service;
+package com.openclassrooms.jsonWebToken;
 
 import java.security.Key;
 import java.util.Date;
