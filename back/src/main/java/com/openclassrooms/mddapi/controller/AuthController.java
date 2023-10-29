@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.openclassrooms.mddapi.dto.AuthResponseDto;
 import com.openclassrooms.mddapi.dto.LoginRequestDto;
 import com.openclassrooms.mddapi.dto.RegisterRequestDto;
-import com.openclassrooms.mddapi.service.AuthService;
+import com.openclassrooms.mddapi.service.AuthServiceI;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
     
-    private final AuthService authService;
+    private final AuthServiceI authService;
     
     @PostMapping(value = "login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto request)
