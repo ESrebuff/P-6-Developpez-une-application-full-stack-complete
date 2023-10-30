@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.openclassrooms.mddapi.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username); 
 }

@@ -9,6 +9,6 @@ public interface SubjectServiceI {
 
     Map<String, List<SubjectDto>> getSubjects();
 
-    SubjectDto getSubject(Long id);
+    SubjectDto getSubject(Integer id);
 
 }

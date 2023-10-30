@@ -20,11 +20,12 @@ public class SubjectController {
 
     @GetMapping
     public Map<String, List<SubjectDto>> getSubjects() {
+        System.out.println("testtt ------ getSubjects ------- testtt");
         return subjectService.getSubjects();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SubjectDto> getSubject(@PathVariable Long id) {
+    public ResponseEntity<SubjectDto> getSubject(@PathVariable Integer id) {
         SubjectDto subjectsDto = subjectService.getSubject(id);
         if (subjectsDto == null) {
             return ResponseEntity.notFound().build();

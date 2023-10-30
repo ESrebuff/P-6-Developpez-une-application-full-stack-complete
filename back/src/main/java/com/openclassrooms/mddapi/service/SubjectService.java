@@ -47,7 +47,7 @@ public class SubjectService implements SubjectServiceI {
     }
 
     @Override
-    public SubjectDto getSubject(Long id) {
+    public SubjectDto getSubject(Integer id) {
         Subject subject = subjectRepository.findById(id).orElse(null);
         if (subject != null) {
             return mapToSubjectDto(subject);
