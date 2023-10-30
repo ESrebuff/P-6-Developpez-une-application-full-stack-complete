@@ -19,9 +19,6 @@ public class Subject {
 
     @Column(nullable = false)
     private String name;
-    
-    @Column(name = "author_id")
-    private Long authorId;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

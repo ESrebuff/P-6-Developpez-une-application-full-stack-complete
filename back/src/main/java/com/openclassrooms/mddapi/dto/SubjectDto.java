@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SubjectDto {
     private Long id;
-    private Long authorId;
     private String name;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;

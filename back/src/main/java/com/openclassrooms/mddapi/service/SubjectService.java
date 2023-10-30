@@ -1,17 +1,14 @@
 package com.openclassrooms.mddapi.service;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.mddapi.dto.SubjectDto;
-import com.openclassrooms.mddapi.exception.SubjectNotFoundException;
 import com.openclassrooms.mddapi.model.Subject;
 import com.openclassrooms.mddapi.repository.SubjectRepository;
 
@@ -34,14 +31,6 @@ public class SubjectService implements SubjectServiceI {
 
     private SubjectDto mapToSubjectDto(Subject subject) {
         return modelMapper.map(subject, SubjectDto.class);
-    }
-
-    @Override
-    public SubjectDto create(Subject subject, Long userId) {
-        subject.setAuthorId(userId);
-        Subject subjectSaved = subjectRepository.save(subject);
-        SubjectDto subjectDto = mapToSubjectDto(subjectSaved);
-        return subjectDto;
     }
 
     @Override

@@ -26,8 +26,8 @@ public class AuthService implements AuthServiceI {
 
     @Override
     public AuthResponseDto login(LoginRequestDto request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        UserDetails user = userRepository.findByUsername(request.getEmail()).orElseThrow();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         String token = jwtService.getToken(user);
         return AuthResponseDto.builder()
             .token(token)
