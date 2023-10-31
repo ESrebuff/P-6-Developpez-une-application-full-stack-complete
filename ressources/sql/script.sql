@@ -1,14 +1,26 @@
 CREATE TABLE `USERS` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    CONSTRAINT email_unique UNIQUE (email)
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 CREATE TABLE `SUBJECTS` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE SUBSCRIPTIONS (
+    user_id INT,
+    subject_id INT,
+    subscription_date TIMESTAMP,
+    PRIMARY KEY (user_id, subject_id),
+    FOREIGN KEY (user_id) REFERENCES USERS(id),
+    FOREIGN KEY (subject_id) REFERENCES SUBJECTS(id)
 );
 
 CREATE TABLE `ARTICLES` (
@@ -18,6 +30,8 @@ CREATE TABLE `ARTICLES` (
     subject_id INT,
     author_id INT,
     publication_date DATETIME NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
     FOREIGN KEY (subject_id) REFERENCES Subjects(id),
     FOREIGN KEY (author_id) REFERENCES Users(id)
 );
@@ -28,6 +42,8 @@ CREATE TABLE `COMMENTS` (
     article_id INT,
     author_id INT,
     publication_date DATETIME NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
     FOREIGN KEY (article_id) REFERENCES Articles(id),
     FOREIGN KEY (author_id) REFERENCES Users(id)
 );
