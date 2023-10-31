@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubjectDto {
-    private Long id;
+    private Integer id;
     private String name;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;

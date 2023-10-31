@@ -2,7 +2,6 @@ package com.openclassrooms.mddapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -15,15 +14,15 @@ public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Integer userId;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")
-    private Subject subject;
+    private Integer subjectId;
 
     @Column(name = "subscription_date")
     private LocalDateTime subscriptionDate;
