@@ -26,11 +26,14 @@ public class AuthController {
 
     @PostMapping(value = "register")
     public ResponseEntity<AuthResponseDto> register(@RequestBody RegisterRequestDto request) {
-        if (authService.register(request) == null) {
+        AuthResponseDto registrationResult = authService.register(request);
+
+        if (registrationResult == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(AuthResponseDto.builder()
                             .build());
         }
-        return ResponseEntity.ok(authService.register(request));
+
+        return ResponseEntity.ok(registrationResult);
     }
 }

@@ -5,11 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 import com.openclassrooms.mddapi.dto.SubscriptionDto;
+import com.openclassrooms.mddapi.model.Subject;
 import com.openclassrooms.mddapi.model.Subscription;
+import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.SubscriptionRepository;
+
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 
@@ -19,13 +24,15 @@ public class SubscriptionService implements SubscriptionServiceI {
 
     private final SubscriptionRepository subscriptionRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final SubjectService subjectService;
 
     @PostConstruct
     public void configureModelMapper() {
         modelMapper.createTypeMap(Subscription.class, SubscriptionDto.class)
-                .addMapping(Subscription::getUserId, SubscriptionDto::setUser_id)
-                .addMapping(Subscription::getSubjectId, SubscriptionDto::setSubject_id)
-                .addMapping(Subscription::getSubscriptionDate, SubscriptionDto::setSubscription_date);
+                .addMapping(src -> src.getUser().getId(), SubscriptionDto::setUser)
+                .addMapping(src -> src.getSubject().getId(), SubscriptionDto::setSubject);
+
     }
 
     private SubscriptionDto mapToSubscriptionDto(Subscription subscription) {
@@ -57,8 +64,10 @@ public class SubscriptionService implements SubscriptionServiceI {
     @Override
     public SubscriptionDto create(Integer userId, Integer subjectId) {
         Subscription newSubscription = new Subscription();
-        newSubscription.setUserId(userId);
-        newSubscription.setSubjectId(subjectId);
+        User user = modelMapper.map(userService.getUserById(userId), User.class);
+        Subject subject = modelMapper.map(subjectService.getSubject(subjectId), Subject.class);
+        newSubscription.setUser(user);
+        newSubscription.setSubject(subject);
         newSubscription.setSubscriptionDate(LocalDateTime.now());
         Subscription savedSubscription = subscriptionRepository.save(newSubscription);
         return mapToSubscriptionDto(savedSubscription);
@@ -70,5 +79,4 @@ public class SubscriptionService implements SubscriptionServiceI {
             subscriptionRepository.deleteById(id);
         }
     }
-
 }

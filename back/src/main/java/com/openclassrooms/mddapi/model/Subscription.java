@@ -18,11 +18,11 @@ public class Subscription {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Integer userId;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")
-    private Integer subjectId;
+    private Subject subject;
 
     @Column(name = "subscription_date")
     private LocalDateTime subscriptionDate;
