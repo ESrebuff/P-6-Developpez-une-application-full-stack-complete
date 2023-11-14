@@ -20,7 +20,8 @@ public class UserService implements UserServiceI {
     @PostConstruct
     public void configureModelMapper() {
         modelMapper.createTypeMap(User.class, UserDto.class)
-                .addMapping(User::getUsername, UserDto::setUsername)
+                .addMapping(User::getUsername, UserDto::setUuid)
+                .addMapping(User::getEmail, UserDto::setEmail)
                 .addMapping(User::getName, UserDto::setName)
                 .addMapping(User::getCreatedAt, UserDto::setCreated_at)
                 .addMapping(User::getUpdatedAt, UserDto::setUpdated_at);

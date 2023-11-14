@@ -29,8 +29,8 @@ public class AuthService implements AuthServiceI {
     @Override
     public AuthResponseDto login(LoginRequestDto request) {
         authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        UserDetails user = userRepository.findByUsername(request.getEmail()).orElseThrow();
         String token = jwtService.getToken(user);
         return AuthResponseDto.builder()
                 .token(token)
@@ -40,9 +40,9 @@ public class AuthService implements AuthServiceI {
 
     @Override
     public AuthResponseDto register(RegisterRequestDto request) {
-        if (isValidEmail(request.getUsername())) {
+        if (isValidEmail(request.getEmail())) {
             User user = User.builder()
-                    .username(request.getUsername())
+                    .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .name(request.getName())
                     .build();

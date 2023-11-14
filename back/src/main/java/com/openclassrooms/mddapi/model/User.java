@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.model;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.UUID;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,7 +18,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "USERS", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }) })
+@Table(name = "USERS", uniqueConstraints = { @UniqueConstraint(columnNames = { "uuid" }) })
 public class User implements UserDetails {
 
     @Id
@@ -25,8 +26,12 @@ public class User implements UserDetails {
     private Integer id;
 
     @Basic
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, name = "uuid")
     private String username;
+
+    @Basic
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Column(nullable = false)
     private String name;
@@ -42,6 +47,8 @@ public class User implements UserDetails {
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
+        username = UUID.randomUUID().toString();
+        email = UUID.randomUUID().toString();
     }
 
     @Override
