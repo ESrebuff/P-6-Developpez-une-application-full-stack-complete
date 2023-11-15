@@ -34,9 +34,10 @@ public class AuthService implements AuthServiceI {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
-        String token = jwtService.getToken(user);
+        
         return AuthResponseDto.builder()
-                .token(token)
+                .token(jwtService.getAccessToken(user))
+                .refreshToken(jwtService.getRefreshToken(user))
                 .build();
 
     }
@@ -52,7 +53,8 @@ public class AuthService implements AuthServiceI {
 
             userRepository.save(user);
             return AuthResponseDto.builder()
-                    .token(jwtService.getToken(user))
+                    .token(jwtService.getAccessToken(user))
+                    .refreshToken(jwtService.getRefreshToken(user))
                     .build();
         }
         return null;
@@ -88,10 +90,16 @@ public class AuthService implements AuthServiceI {
         UserDetails updatedUserDetails = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new RuntimeException("Updated user not found"));
 
-        String newToken = jwtService.getToken(updatedUserDetails);
+        // Generate a new access token with the updated email
+        String newAccessToken = jwtService.getAccessToken(updatedUserDetails);
+
+        // Generate a new refresh token
+        String newRefreshToken = jwtService.getRefreshToken(updatedUserDetails);
+
         
         return AuthResponseDto.builder()
-                .token(newToken)
+                .token(newAccessToken)
+                .refreshToken(newRefreshToken)
                 .build();
     }
 

@@ -20,17 +20,26 @@ public class JwtService {
 
     private static final String SECRET_KEY="586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
 
-    public String getToken(UserDetails user) {
-        return getToken(new HashMap<>(), user);
+    public String getAccessToken(UserDetails user) {
+        return getAccessToken(new HashMap<>(), user);
     }
 
-    private String getToken(Map<String, Object> extraClaims, UserDetails user) {
+    private String getAccessToken(Map<String, Object> extraClaims, UserDetails user) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 12))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // 30 minutes
+                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String getRefreshToken(UserDetails user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 30)) // 30 days
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -69,6 +78,16 @@ public class JwtService {
 
     private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
+    }
+
+    public boolean isTokenAboutToExpire(String token) {
+        final Date expiration = getExpiration(token);
+        final long expirationInMillis = expiration.getTime();
+        final long currentTimeInMillis = System.currentTimeMillis();
+
+        final long thresholdInMillis = 1000 * 60 * 30;
+
+        return expirationInMillis - currentTimeInMillis <= thresholdInMillis;
     }
 
 }
