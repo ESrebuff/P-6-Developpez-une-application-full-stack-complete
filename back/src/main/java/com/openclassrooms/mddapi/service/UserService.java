@@ -1,6 +1,8 @@
 package com.openclassrooms.mddapi.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.mddapi.dto.UserDto;
@@ -33,6 +35,23 @@ public class UserService implements UserServiceI {
     @Override
     public UserDto getUserById(Integer id) {
         User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            return mapToUserDto(user);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public UserDto getCurrentUser() {
+        // Retrieve the currently authenticated user's username
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // Retrieve user by username
+        User user = userRepository.findByUsername(username).orElse(null);
+
+        // Map to UserDto
         if (user != null) {
             return mapToUserDto(user);
         } else {

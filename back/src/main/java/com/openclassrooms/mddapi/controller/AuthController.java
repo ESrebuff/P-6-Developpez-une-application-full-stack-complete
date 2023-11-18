@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.openclassrooms.mddapi.dto.AuthResponseDto;
 import com.openclassrooms.mddapi.dto.LoginRequestDto;
 import com.openclassrooms.mddapi.dto.RegisterRequestDto;
+import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.dto.UserUpdateDto;
 import com.openclassrooms.mddapi.service.AuthService;
+import com.openclassrooms.mddapi.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
 
     @PostMapping(value = "login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto request) {
@@ -50,5 +55,16 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(updateResult);
+    }
+
+    @GetMapping(value = "me")
+    public ResponseEntity<UserDto> getMyProfile() {
+        UserDto userDto = userService.getCurrentUser();
+
+        if (userDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(userDto);
     }
 }
