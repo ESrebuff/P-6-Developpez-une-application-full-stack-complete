@@ -2,6 +2,8 @@ package com.openclassrooms.mddapi.service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.time.LocalDateTime;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,7 @@ import com.openclassrooms.mddapi.dto.UserUpdateDto;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import com.openclassrooms.mddapi.security.JwtService;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -34,7 +37,7 @@ public class AuthService implements AuthServiceI {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
-        
+
         return AuthResponseDto.builder()
                 .token(jwtService.getAccessToken(user))
                 .refreshToken(jwtService.getRefreshToken(user))
@@ -75,12 +78,16 @@ public class AuthService implements AuthServiceI {
         // Update the user's information
         if (request.getUsername() != null) {
             user.setUsername(request.getUsername());
+            user.setUpdatedAt(LocalDateTime.now());
         }
+
         if (request.getName() != null) {
             user.setName(request.getName());
+            user.setUpdatedAt(LocalDateTime.now());
         }
         if (request.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setUpdatedAt(LocalDateTime.now());
         }
 
         // Save the updated user to the database
@@ -95,8 +102,6 @@ public class AuthService implements AuthServiceI {
 
         // Generate a new refresh token
         String newRefreshToken = jwtService.getRefreshToken(updatedUserDetails);
-
-        
         return AuthResponseDto.builder()
                 .token(newAccessToken)
                 .refreshToken(newRefreshToken)
