@@ -78,16 +78,13 @@ public class AuthService implements AuthServiceI {
         // Update the user's information
         if (request.getUsername() != null) {
             user.setUsername(request.getUsername());
-            user.setUpdatedAt(LocalDateTime.now());
         }
 
         if (request.getName() != null) {
             user.setName(request.getName());
-            user.setUpdatedAt(LocalDateTime.now());
         }
         if (request.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
-            user.setUpdatedAt(LocalDateTime.now());
         }
 
         // Save the updated user to the database

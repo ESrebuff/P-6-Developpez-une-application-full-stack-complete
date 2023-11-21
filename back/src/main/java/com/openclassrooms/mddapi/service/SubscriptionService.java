@@ -1,19 +1,20 @@
 package com.openclassrooms.mddapi.service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.mddapi.dto.SubscriptionDto;
 import com.openclassrooms.mddapi.model.Subject;
 import com.openclassrooms.mddapi.model.Subscription;
+import com.openclassrooms.mddapi.model.SubscriptionId;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.SubscriptionRepository;
+import com.openclassrooms.mddapi.repository.UserRepository;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,8 @@ import lombok.AllArgsConstructor;
 public class SubscriptionService implements SubscriptionServiceI {
 
     private final SubscriptionRepository subscriptionRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final SubjectService subjectService;
 
     @PostConstruct
@@ -40,31 +41,13 @@ public class SubscriptionService implements SubscriptionServiceI {
     }
 
     @Override
-    public SubscriptionDto getSubscriptionById(Integer id) {
-        Subscription subscription = subscriptionRepository.findById(id).orElse(null);
-        if (subscription != null) {
-            return mapToSubscriptionDto(subscription);
-        }
-        return null;
-    }
+    public SubscriptionDto create(Integer subjectId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    @Override
-    public Map<String, List<SubscriptionDto>> getSubscriptions() {
-        List<Subscription> subscriptions = subscriptionRepository.findAll();
-        List<SubscriptionDto> subscriptionDtos = subscriptions.stream()
-                .map(this::mapToSubscriptionDto)
-                .collect(Collectors.toList());
-
-        Map<String, List<SubscriptionDto>> response = new HashMap<>();
-        response.put("subscriptions", subscriptionDtos);
-
-        return response;
-    }
-
-    @Override
-    public SubscriptionDto create(Integer userId, Integer subjectId) {
         Subscription newSubscription = new Subscription();
-        User user = modelMapper.map(userService.getUserById(userId), User.class);
         Subject subject = modelMapper.map(subjectService.getSubject(subjectId), Subject.class);
         newSubscription.setUser(user);
         newSubscription.setSubject(subject);
@@ -74,9 +57,15 @@ public class SubscriptionService implements SubscriptionServiceI {
     }
 
     @Override
-    public void delete(Integer id) {
-        if (subscriptionRepository.existsById(id)) {
-            subscriptionRepository.deleteById(id);
-        }
+    public void delete(Integer subjectId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        SubscriptionId subscriptionId = new SubscriptionId();
+        subscriptionId.setUser(user.getId());
+        subscriptionId.setSubject(subjectId);
+        subscriptionRepository.deleteById(subscriptionId);
     }
 }

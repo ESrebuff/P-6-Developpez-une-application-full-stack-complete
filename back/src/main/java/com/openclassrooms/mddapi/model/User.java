@@ -44,6 +44,11 @@ public class User implements UserDetails {
         createdAt = LocalDateTime.now();
     }
 
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

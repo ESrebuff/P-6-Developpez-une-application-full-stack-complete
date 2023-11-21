@@ -20,7 +20,6 @@ public class SubjectController {
 
     @GetMapping
     public Map<String, List<SubjectDto>> getSubjects() {
-        System.out.println("testtt ------ getSubjects ------- testtt");
         return subjectService.getSubjects();
     }
 
@@ -32,30 +31,5 @@ public class SubjectController {
         }
         return ResponseEntity.ok(subjectsDto);
     }
-
-    // @PostMapping
-    // public ResponseEntity<Map<String, String>> createSubject(HttpServletRequest
-    // request,
-    // @ModelAttribute("subjects") SubjectDto subjectsDto) throws
-    // IllegalStateException, IOException {
-
-    // String authorizationHeader = request.getHeader("Authorization");
-    // String token = null;
-    // if (authorizationHeader != null && authorizationHeader.startsWith("Bearer "))
-    // {
-    // token = authorizationHeader.substring(7);
-    // }
-    // if (token != null) {
-    // String email = jwtService.getUsernameFromToken(token);
-    // User userRepos = userRepository.findByUsername(email).orElse(null);
-    // Long authorId = userRepos.getId();
-    // Subject subject = new Subject();
-    // subject.setName(subjectsDto.getName());
-    // subjectService.create(subject, authorId);
-    // return ResponseEntity.ok(Map.of("message", "Subject created !"));
-    // } else {
-    // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    // }
-
-    // }
+    
 }

@@ -10,16 +10,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "SUBSCRIPTIONS")
+@IdClass(SubscriptionId.class)  // specifying the class for the composite primary key
 public class Subscription {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
@@ -32,3 +31,4 @@ public class Subscription {
         subscriptionDate = LocalDateTime.now();
     }
 }
+
