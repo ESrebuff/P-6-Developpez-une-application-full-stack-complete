@@ -31,9 +31,6 @@ public class Article {
     @JoinColumn(name = "author_id")
     private User author;
 
-    @Column(name = "publication_date", nullable = false)
-    private LocalDateTime publicationDate;
-
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
