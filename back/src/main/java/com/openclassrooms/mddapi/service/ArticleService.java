@@ -4,17 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.dto.ArticleRequestDto;
 import com.openclassrooms.mddapi.dto.ArticleResponseDto;
-import com.openclassrooms.mddapi.dto.CommentDto;
 import com.openclassrooms.mddapi.dto.CommentResponseDto;
 import com.openclassrooms.mddapi.dto.SubjectDto;
 import com.openclassrooms.mddapi.dto.UserDto;
@@ -23,7 +20,6 @@ import com.openclassrooms.mddapi.model.Subject;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
-
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 

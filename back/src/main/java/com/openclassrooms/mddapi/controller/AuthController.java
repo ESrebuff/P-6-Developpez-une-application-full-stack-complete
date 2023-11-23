@@ -15,7 +15,6 @@ import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.dto.UserUpdateDto;
 import com.openclassrooms.mddapi.service.AuthService;
 import com.openclassrooms.mddapi.service.UserService;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -34,11 +33,11 @@ public class AuthController {
     @PostMapping(value = "register")
     public ResponseEntity<AuthResponseDto> register(@RequestBody RegisterRequestDto request) {
         AuthResponseDto registrationResult = authService.register(request);
+        System.out.println("registrationResult");
+        System.out.println(registrationResult);
 
         if (registrationResult == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(AuthResponseDto.builder()
-                            .build());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         return ResponseEntity.ok(registrationResult);
@@ -49,9 +48,7 @@ public class AuthController {
         AuthResponseDto updateResult = authService.updateProfile(request);
 
         if (updateResult == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(AuthResponseDto.builder()
-                            .build());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         return ResponseEntity.ok(updateResult);

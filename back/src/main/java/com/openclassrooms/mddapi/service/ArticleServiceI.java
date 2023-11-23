@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.service;
 
 import java.util.List;
-
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.dto.ArticleRequestDto;
 import com.openclassrooms.mddapi.dto.ArticleResponseDto;

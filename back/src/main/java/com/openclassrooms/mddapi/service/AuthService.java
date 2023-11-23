@@ -2,8 +2,6 @@ package com.openclassrooms.mddapi.service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.time.LocalDateTime;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +16,6 @@ import com.openclassrooms.mddapi.dto.UserUpdateDto;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import com.openclassrooms.mddapi.security.JwtService;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -47,7 +44,7 @@ public class AuthService implements AuthServiceI {
 
     @Override
     public AuthResponseDto register(RegisterRequestDto request) {
-        if (isValidEmail(request.getUsername())) {
+        if (isValidEmail(request.getUsername()) && isValidPassword(request.getPassword())) {
             User user = User.builder()
                     .username(request.getUsername())
                     .password(passwordEncoder.encode(request.getPassword()))
@@ -77,14 +74,23 @@ public class AuthService implements AuthServiceI {
 
         // Update the user's information
         if (request.getUsername() != null) {
-            user.setUsername(request.getUsername());
+            if (isValidEmail(request.getUsername())) {
+                user.setUsername(request.getUsername());
+            } else {
+                return null;
+            }
         }
 
         if (request.getName() != null) {
             user.setName(request.getName());
         }
+
         if (request.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            if (isValidPassword(request.getPassword())) {
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
+            } else {
+                return null;
+            }
         }
 
         // Save the updated user to the database
@@ -109,4 +115,18 @@ public class AuthService implements AuthServiceI {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
+    private boolean isValidPassword(String password) {
+        // Check if the password meets all the criteria
+        return password.length() >= 8 &&
+                // contains at least one digit (number)
+                password.matches(".*\\d.*") &&
+                // contains at least one lowercase letter
+                password.matches(".*[a-z].*") &&
+                // contains at least one uppercase letter
+                password.matches(".*[A-Z].*") &&
+                // contains at least one special character from the provided list
+                password.matches(".*[!@#$%^&*()-+=].*");
+    }
+
 }

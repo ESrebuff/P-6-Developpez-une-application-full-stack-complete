@@ -1,13 +1,11 @@
 package com.openclassrooms.mddapi.service;
 
 import java.time.LocalDateTime;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import com.openclassrooms.mddapi.dto.SubscriptionDto;
 import com.openclassrooms.mddapi.model.Subject;
 import com.openclassrooms.mddapi.model.Subscription;
@@ -15,7 +13,6 @@ import com.openclassrooms.mddapi.model.SubscriptionId;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.SubscriptionRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
-
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 

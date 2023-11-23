@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.model;
 
 import java.io.Serializable;
-
 import lombok.Data;
 
 @Data
