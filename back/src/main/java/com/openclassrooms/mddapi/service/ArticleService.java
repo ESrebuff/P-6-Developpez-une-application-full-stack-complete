@@ -3,6 +3,8 @@ package com.openclassrooms.mddapi.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.dto.ArticleRequestDto;
 import com.openclassrooms.mddapi.dto.ArticleResponseDto;
+import com.openclassrooms.mddapi.dto.CommentDto;
+import com.openclassrooms.mddapi.dto.CommentResponseDto;
 import com.openclassrooms.mddapi.dto.SubjectDto;
 import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.model.Article;
@@ -26,13 +30,13 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class ArticleService implements ArticleServiceI {
-    
+
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final SubjectService subjectService;
     private final UserService userService;
     private final ModelMapper modelMapper;
-    
+
     @PostConstruct
     public void configureModelMapper() {
         modelMapper.createTypeMap(Article.class, ArticleDto.class)
@@ -65,7 +69,7 @@ public class ArticleService implements ArticleServiceI {
         Article savedArticle = articleRepository.save(newArticle);
         return mapToArticleDto(savedArticle);
     }
-    
+
     public List<ArticleResponseDto> getAllArticlesWithDetails() {
         List<Article> articles = articleRepository.findAll();
         List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
@@ -89,12 +93,21 @@ public class ArticleService implements ArticleServiceI {
     }
 
     private ArticleResponseDto mapArticleToDto(Article article) {
-        
         SubjectDto subjectDto = subjectService.getSubject(article.getSubject().getId());
         UserDto userDto = userService.getUserById(article.getAuthor().getId());
-
+    
+        List<CommentResponseDto> commentResponseDtos = article.getComments().stream()
+                .map(comment -> {
+                    CommentResponseDto commentResponseDto = modelMapper.map(comment, CommentResponseDto.class);
+                    UserDto commentUserDto = userService.getUserById(comment.getAuthor().getId());
+                    commentResponseDto.setAuthor(commentUserDto);
+                    return commentResponseDto;
+                })
+                .collect(Collectors.toList());
+    
         return modelMapper.map(article, ArticleResponseDto.class)
-                .setAuthorName(userDto.getName())
-                .setSubjectName(subjectDto.getName());
+                .setAuthor(userDto)
+                .setSubject(subjectDto)
+                .setComments(commentResponseDtos);
     }
 }

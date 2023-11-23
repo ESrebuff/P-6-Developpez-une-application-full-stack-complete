@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,18 +17,24 @@ public class ArticleResponseDto {
     private Integer id;
     private String title;
     private String content;
-    private String authorName;
-    private String subjectName;
+    private UserDto author;
+    private SubjectDto subject;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<CommentResponseDto> comments;
 
-    public ArticleResponseDto setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public ArticleResponseDto setAuthor(UserDto author) {
+        this.author = author;
         return this;
     }
 
-    public ArticleResponseDto setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
+    public ArticleResponseDto setSubject(SubjectDto subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    public ArticleResponseDto setComments(List<CommentResponseDto> comments) {
+        this.comments = comments;
         return this;
     }
 }

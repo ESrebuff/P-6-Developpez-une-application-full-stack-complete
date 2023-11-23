@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -30,6 +31,9 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
