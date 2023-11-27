@@ -1,1 +1,12 @@
-<p>login works!</p>
+<app-header-register [title]="'Se connecter'"></app-header-register>
+<div class="center-container">
+  <form>
+    <label for="usernameEmail">E-mail ou nom d'utilisateur</label>
+    <input type="text" id="usernameEmail" name="usernameEmail" required />
+
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" required />
+
+    <button type="submit">Se connecter</button>
+  </form>
+</div>

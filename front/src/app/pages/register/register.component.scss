@@ -1,0 +1,31 @@
+.center-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    max-width: 250px;
+    align-items: center;
+}
+
+input {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 45px;
+    border-radius: 10px;
+}
+
+button {
+    background-color: #7763C5;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    font-weight: bold;
+    width: 100px;
+}
