@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,11 +20,13 @@ import { HeaderRegisterComponent } from './components/header-register/header-reg
 @NgModule({
   declarations: [AppComponent, HomeComponent, ArticlesListComponent, ArticleDetailsComponent, ThemesListComponent, ProfileComponent, CreateArticleComponent, LoginComponent, RegisterComponent, HeaderRegisterComponent],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

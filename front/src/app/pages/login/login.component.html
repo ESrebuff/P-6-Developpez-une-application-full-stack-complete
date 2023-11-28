@@ -1,11 +1,11 @@
 <app-header-register [title]="'Se connecter'"></app-header-register>
 <div class="center-container">
-  <form>
+  <form (ngSubmit)="onSubmit()">
     <label for="usernameEmail">E-mail ou nom d'utilisateur</label>
-    <input type="text" id="usernameEmail" name="usernameEmail" required />
+    <input type="text" id="usernameEmail" name="usernameEmail" [(ngModel)]="username" required />
 
     <label for="password">Mot de passe</label>
-    <input type="password" id="password" name="password" required />
+    <input type="password" id="password" name="password" [(ngModel)]="password" required />
 
     <button type="submit">Se connecter</button>
   </form>

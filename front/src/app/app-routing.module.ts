@@ -8,19 +8,21 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { CreateArticleComponent } from './pages/create-article/create-article.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { PrivateGuard } from './core/guards/private.guards';
+import { PublicGuard } from './core/guards/public.guards';
 
 
 // consider a guard combined with canLoad / canActivate route option
 // to manage unauthenticated user to access private routes
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'articles', component: ArticlesListComponent },
-  { path: 'article/:id', component: ArticleDetailsComponent },
-  { path: 'themes', component: ThemesListComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'create-article', component: CreateArticleComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: '', component: HomeComponent, canActivate: [PublicGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [PublicGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [PublicGuard] },
+  { path: 'articles', component: ArticlesListComponent, canActivate: [PrivateGuard] },
+  { path: 'article/:id', component: ArticleDetailsComponent, canActivate: [PrivateGuard] },
+  { path: 'themes', component: ThemesListComponent, canActivate: [PrivateGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [PrivateGuard] },
+  { path: 'create-article', component: CreateArticleComponent, canActivate: [PrivateGuard] },
 ];
 
 @NgModule({
