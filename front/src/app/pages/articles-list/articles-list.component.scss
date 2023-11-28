@@ -1,0 +1,32 @@
+.container-gestion-article {
+    display: flex;
+    justify-content: space-between;
+}
+
+.elt-article.create-article {
+    color: #fff;
+    background: #7763C5;
+    border: 0px;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.elt-article {
+    font-size: 1.8em;
+}
+
+.icon-arrow {
+    transform: rotate(-90deg);
+}
+
+@media screen and (max-width: 700px) {
+
+    .container-gestion-article {
+        flex-direction: column;
+    }
+
+    .elt-article {
+        margin: 10px;
+    }
+
+}

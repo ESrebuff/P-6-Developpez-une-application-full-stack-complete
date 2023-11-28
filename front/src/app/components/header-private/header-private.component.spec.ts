@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeaderRegisterComponent } from './header-register.component';
+import { HeaderPrivateComponent } from './header-private.component';
 
-describe('HeaderRegisterComponent', () => {
-  let component: HeaderRegisterComponent;
-  let fixture: ComponentFixture<HeaderRegisterComponent>;
+describe('HeaderPrivateComponent', () => {
+  let component: HeaderPrivateComponent;
+  let fixture: ComponentFixture<HeaderPrivateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeaderRegisterComponent ]
+      declarations: [ HeaderPrivateComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HeaderRegisterComponent);
+    fixture = TestBed.createComponent(HeaderPrivateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,26 @@
+<mat-toolbar class="header">
+  <img src="/assets/logo_p6.png" alt="logo" class="logo" />
+  <div class="btns-header">
+    <button mat-button [routerLink]="['/articles']" [ngClass]="{'active': activePage === 'articles'}">Articles</button>
+    <button mat-button [routerLink]="['/themes']" [ngClass]="{'active': activePage === 'themes'}">Thèmes</button>
+    <mat-icon [routerLink]="['/profile']" class="person" [ngClass]="{'active': activePage === 'profile'}">person_outline</mat-icon>
+  </div>
+
+  <button mat-icon-button class="menu-button" (click)="toggleVisibility()">
+    <mat-icon class="menu-icon">menu</mat-icon>
+  </button>
+
+  <!-- Activer et désactiver une class qui affiche le contenu du menu-->
+
+  <div class="blur" [ngClass]="{ visible: isElementVisible }">
+  </div>
+  <div class="toggleMenu" [ngClass]="{ visible: isElementVisible }">
+    <div class="menu">
+      <button class="burger-button" [routerLink]="['/articles']" (click)="toggleVisibility()">Articles</button>
+      <button class="burger-button" [routerLink]="['/themes']" (click)="toggleVisibility()">Thèmes</button>
+      <button class="burger-button" [routerLink]="['/profile']" (click)="toggleVisibility()">
+        <mat-icon class="person-responsive">person_outline</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-toolbar>

@@ -1,1 +1,14 @@
-<p>articles-list works!</p>
+<app-header-private [activePage]="'articles'"></app-header-private>
+<div class="wrapper">
+  <div class="container-gestion-article">
+    <button class="elt-article create-article">Créer un article</button>
+    <button class="elt-article" mat-button [matMenuTriggerFor]="menu">
+      Trier par <mat-icon class="icon-arrow">keyboard_backspace</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>Par chronologie</button>
+      <button mat-menu-item>Par défaut</button>
+    </mat-menu>
+  </div>
+  <p>articles-list works!</p>
+</div>
