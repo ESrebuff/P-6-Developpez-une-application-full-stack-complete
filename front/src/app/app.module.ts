@@ -19,9 +19,10 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HeaderPublicComponent } from './components/header-public/header-public.component';
 import { HeaderPrivateComponent } from './components/header-private/header-private.component';
+import { ArticleComponent } from './components/article/article.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ArticlesListComponent, ArticleDetailsComponent, ThemesListComponent, ProfileComponent, CreateArticleComponent, LoginComponent, RegisterComponent, HeaderPublicComponent, HeaderPrivateComponent],
+  declarations: [AppComponent, HomeComponent, ArticlesListComponent, ArticleDetailsComponent, ThemesListComponent, ProfileComponent, CreateArticleComponent, LoginComponent, RegisterComponent, HeaderPublicComponent, HeaderPrivateComponent, ArticleComponent],
   imports: [
     HttpClientModule,
     BrowserModule,

@@ -19,14 +19,19 @@
     transform: rotate(-90deg);
 }
 
-@media screen and (max-width: 700px) {
+.articles-container {
+    display: flex;
+    justify-content: center;
+}
 
-    .container-gestion-article {
-        flex-direction: column;
-    }
+.articles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
 
-    .elt-article {
-        margin: 10px;
+@media screen and (max-width: 1024px) {
+    .articles {
+        grid-template-columns: repeat(1, 1fr);
     }
 
 }

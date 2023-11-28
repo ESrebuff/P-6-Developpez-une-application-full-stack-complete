@@ -1,0 +1,19 @@
+.article {
+    background-color: #F5F5F5;
+    max-width: 600px;
+    height: 300px;
+    margin: 20px 35px;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.title-article {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    
+}
