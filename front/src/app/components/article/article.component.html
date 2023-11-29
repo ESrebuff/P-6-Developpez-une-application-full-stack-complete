@@ -1,11 +1,10 @@
-<div class="article">
-  <p class="title-article">Titre de l'article</p>
+<div [routerLink]="['/article/'+ article.id]" class="article">
+  <p class="title-article">{{ article.title }}</p>
   <div class="info">
-    <p>article works!</p>
-    <p>article works!</p>
+    <p>{{ article.createdAt }}</p>
+    <p>{{ article.author.name }}</p>
   </div>
-  <p>
-    article works! article works! article works! article works! article
-    works!article works! article works!
+  <p class="article-content">
+    {{ article.content }}
   </p>
 </div>

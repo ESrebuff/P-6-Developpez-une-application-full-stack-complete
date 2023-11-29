@@ -7,6 +7,10 @@
     padding: 10px;
 }
 
+.article:hover {
+    cursor: pointer;
+}
+
 .title-article {
     font-size: 1.2em;
     font-weight: bold;
@@ -17,3 +21,4 @@
     grid-template-columns: repeat(2, 1fr);
     
 }
+

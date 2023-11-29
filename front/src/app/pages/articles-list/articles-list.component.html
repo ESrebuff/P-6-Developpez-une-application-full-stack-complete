@@ -6,21 +6,17 @@
       Trier par <mat-icon class="icon-arrow">keyboard_backspace</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>Par chronologie</button>
+      <button mat-menu-item (click)="sortArticlesByChronology()">Par chronologie</button>
       <button mat-menu-item>Par défaut</button>
     </mat-menu>
   </div>
-</div>
 
-<!-- <div class="articles">
-  <app-article></app-article>
-</div> -->
-<div class="articles-container">
-  <div class="articles">
-    <app-article></app-article>
-    <app-article></app-article>
-    <app-article></app-article>
-    <app-article></app-article>
-    <app-article></app-article>
+  <div class="articles-container">
+    <div class="articles">
+      <app-article
+        *ngFor="let article of sortedArticles"
+        [article]="article"
+      ></app-article>
+    </div>
   </div>
 </div>

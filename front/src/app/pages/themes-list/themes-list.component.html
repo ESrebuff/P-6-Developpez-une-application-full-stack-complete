@@ -1,2 +1,8 @@
 <app-header-private [activePage]="'themes'"></app-header-private>
-<p>themes-list works!</p>
+
+<div class="themes-container">
+    <div class="themes">
+      <app-theme *ngFor="let theme of themes" [theme]="theme"></app-theme>
+    </div>
+  </div>
+  
