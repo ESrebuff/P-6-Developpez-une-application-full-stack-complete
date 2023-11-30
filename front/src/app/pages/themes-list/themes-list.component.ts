@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'src/app/core/interfaces/subject.interface';
+import { SubjectService } from '../../core/services/subject.service';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-themes-list',
@@ -6,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./themes-list.component.scss']
 })
 export class ThemesListComponent implements OnInit {
+  subjects$: Observable<Subject[]> | undefined;
+
   themes = [
     { title: 'Theme 1', author: 'author'  },
     { title: 'Theme 2', author: 'author'  },
@@ -17,9 +22,13 @@ export class ThemesListComponent implements OnInit {
     { title: 'Theme 8', author: 'author'  },
     { title: 'Theme 9', author: 'author'  }
   ];
-  constructor() { }
+
+
+  constructor(private subjectService: SubjectService) { }
 
   ngOnInit(): void {
+    this.subjects$ = this.subjectService.getAllSubjects().pipe(map(response => response.subjects));
+    this.subjects$.subscribe(data => console.log(data));
   }
 
 }

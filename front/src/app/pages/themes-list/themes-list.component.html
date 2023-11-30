@@ -2,7 +2,7 @@
 <div class="wrapper">
   <div class="themes-container">
     <div class="themes">
-      <app-theme *ngFor="let theme of themes" [theme]="theme"></app-theme>
+      <app-theme *ngFor="let subject of subjects$ | async" [subject]="subject"></app-theme>
     </div>
   </div>
 </div>
