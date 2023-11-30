@@ -148,10 +148,20 @@ export class ArticlesListComponent implements OnInit {
     this.sortedArticles = [...this.articles];
   }
 
-  sortArticlesByChronology() {
+  sortArticlesByChronological() {
     this.sortedArticles = [...this.articles].sort((a, b) => {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     });
+  }
+
+  sortArticlesBydeChronological() {
+    this.sortedArticles = [...this.articles].sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
+
+  sortArticlesByDefault() {
+    this.sortedArticles = [...this.articles];
   }
 
 

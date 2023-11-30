@@ -12,6 +12,12 @@ export class HeaderPrivateComponent implements OnInit {
 
   toggleVisibility(): void {
     this.isElementVisible = !this.isElementVisible;
+
+    if (this.isElementVisible) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
   constructor() { }
 

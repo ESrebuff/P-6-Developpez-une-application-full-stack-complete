@@ -1,8 +1,8 @@
 <app-header-private [activePage]="'themes'"></app-header-private>
-
-<div class="themes-container">
+<div class="wrapper">
+  <div class="themes-container">
     <div class="themes">
       <app-theme *ngFor="let theme of themes" [theme]="theme"></app-theme>
     </div>
   </div>
-  
+</div>

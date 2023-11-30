@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import * as fr from '@angular/common/locales/fr';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,6 +22,7 @@ import { HeaderPublicComponent } from './components/header-public/header-public.
 import { HeaderPrivateComponent } from './components/header-private/header-private.component';
 import { ArticleComponent } from './components/article/article.component';
 import { ThemeComponent } from './components/theme/theme.component';
+import { registerLocaleData } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ArticlesListComponent, ArticleDetailsComponent, ThemesListComponent, ProfileComponent, CreateArticleComponent, LoginComponent, RegisterComponent, HeaderPublicComponent, HeaderPrivateComponent, ArticleComponent, ThemeComponent],
@@ -35,7 +37,16 @@ import { ThemeComponent } from './components/theme/theme.component';
     MatMenuModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'fr-FR'
+    }
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    registerLocaleData(fr.default);
+  }
+}

@@ -1,13 +1,14 @@
 <app-header-private [activePage]="'articles'"></app-header-private>
 <div class="wrapper">
   <div class="container-gestion-article">
-    <button class="elt-article create-article">Créer un article</button>
+    <button [routerLink]="'/create-article'" class="elt-article create-article">Créer un article</button>
     <button class="elt-article" mat-button [matMenuTriggerFor]="menu">
       Trier par <mat-icon class="icon-arrow">keyboard_backspace</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="sortArticlesByChronology()">Par chronologie</button>
-      <button mat-menu-item>Par défaut</button>
+      <button mat-menu-item (click)="sortArticlesByChronological()">Chronologique</button>
+      <button mat-menu-item (click)="sortArticlesBydeChronological()">Déchronologique</button>
+      <button mat-menu-item (click)="sortArticlesByDefault()">Défaut</button>
     </mat-menu>
   </div>
 

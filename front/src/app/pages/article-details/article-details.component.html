@@ -1,2 +1,32 @@
 <app-header-private></app-header-private>
-<p>article-details works!</p>
+<div class="wrapper">
+  <div class="title-icon-arrow-container">
+    <mat-icon [routerLink]="'/articles'" class="icon-arrow"
+      >keyboard_backspace</mat-icon
+    >
+    <p class="title">{{ article.title }}</p>
+  </div>
+  <div class="infos">
+    <p class="info">{{ article.createdAt }}</p>
+    <p class="info">{{ article.author.name }}</p>
+    <p class="info">{{ article.subject.name }}</p>
+  </div>
+  <p class="contenu">
+    {{ article.content }}
+  </p>
+  <div class="spacer"></div>
+  <p class="comments">Commentaires</p>
+  <div class="comments-container">
+    <div class="comment" *ngFor="let comment of article.comments">
+        <p class="comment-auth">{{ comment.author.name }}</p>
+        <p class="comment-content">{{ comment.content }}</p>
+    </div>
+  </div>
+  <form (ngSubmit)="onSubmit()">
+    <label for="commentText"></label>
+    <textarea placeholder="Écrivez ici votre commentaire" id="commentText" name="commentText" [(ngModel)]="commentText" required>
+    </textarea>
+  
+    <button class="submit" type="submit"><mat-icon class="send-icon">send</mat-icon></button>
+  </form>
+</div>

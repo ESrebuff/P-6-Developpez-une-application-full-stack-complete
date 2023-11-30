@@ -1,2 +1,42 @@
 <app-header-private></app-header-private>
-<p>create-article works!</p>
+<div class="wrapper">
+  <div class="title-icon-arrow-container">
+    <mat-icon [routerLink]="'/articles'" class="icon-arrow"
+      >keyboard_backspace</mat-icon
+    >
+    <p class="form-name">Créer un nouvel article</p>
+  </div>
+  <div class="form-container">
+    <form (ngSubmit)="onSubmit()">
+      <label for="theme-select"></label>
+      <select class="input-form select" name="theme" id="theme-select">
+        <option *ngFor="let theme of themes" [value]="theme.id">
+          {{ theme.name }}
+        </option>
+      </select>
+
+      <label for="title"></label>
+      <input
+        class="input-form"
+        placeholder="Titre de l'article"
+        type="text"
+        id="title"
+        name="title"
+        required
+      />
+
+      <label for="commentText"></label>
+      <textarea
+        class="input-form text-area"
+        placeholder="Écrivez ici votre commentaire"
+        id="commentText"
+        name="commentText"
+        required
+        [(ngModel)]="commentText"
+      >
+      </textarea>
+
+      <button class="submit" type="submit">Créer</button>
+    </form>
+  </div>
+</div>

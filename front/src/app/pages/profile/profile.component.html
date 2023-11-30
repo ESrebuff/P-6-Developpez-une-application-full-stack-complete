@@ -1,2 +1,30 @@
 <app-header-private [activePage]="'profile'"></app-header-private>
-<p>etr</p>
+<div class="wrapper">
+  <p class="form-name">Profil utilisateur</p>
+
+  <div class="form-container">
+    <form>
+      <label for="username"></label>
+      <input
+        class="input-form"
+        type="text"
+        id="username"
+        name="username"
+        required
+      />
+
+      <label for="email"></label>
+      <input class="input-form" type="text" id="email" name="email" required />
+
+      <button class="submit" type="submit">Sauvegarder</button>
+    </form>
+    <p class="logout">Se déconnecter</p>
+  </div>
+  <div class="spacer"></div>
+  <p class="form-name">Abonnements</p>
+  <div class="themes-container">
+    <div class="themes">
+      <app-theme *ngFor="let theme of themes" [theme]="theme"></app-theme>
+    </div>
+  </div>
+</div>

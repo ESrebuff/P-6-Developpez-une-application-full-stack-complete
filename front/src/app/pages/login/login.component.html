@@ -1,6 +1,6 @@
 <app-header-public [title]="'Se connecter'"></app-header-public>
 <div class="center-container">
-  <form (ngSubmit)="onSubmit()">
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
     <label for="usernameEmail">E-mail ou nom d'utilisateur</label>
     <input type="text" id="usernameEmail" name="usernameEmail" [(ngModel)]="username" required />
 
