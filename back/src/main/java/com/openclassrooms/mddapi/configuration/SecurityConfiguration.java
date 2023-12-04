@@ -29,8 +29,7 @@ public class SecurityConfiguration {
                                 .authorizeHttpRequests(authRequest -> authRequest
                                                 .requestMatchers(
                                                                 "/api/auth/register",
-                                                                "/api/auth/login",
-                                                                "/api/**")
+                                                                "/api/auth/login")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sessionManager -> sessionManager
