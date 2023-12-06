@@ -1,26 +1,57 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:9000/api/auth';
-  private _isAuthenticated = true;
 
-  constructor(private http: HttpClient) {}
+  private token: string | undefined;
 
-  // Méthode pour vérifier l'état de connexion
+  constructor(private http: HttpClient) { }
+
+  getToken(): string | null {
+    // Récupère le token depuis la session
+    return sessionStorage.getItem('jwt');
+  }
+
+  setToken(token: string): void {
+    // Stocke le token dans la session
+    sessionStorage.setItem('jwt', token);
+  }
+
   isAuthenticated(): boolean {
-    // Logique pour vérifier le JWT ou toute autre méthode d'authentification
-    return this._isAuthenticated;
+    // Vérifie la présence du token en session
+    return this.getToken() !== null;
   }
 
   login(credentials: { username: string, password: string }): Observable<any> {
-    const url = `${this.apiUrl}/login`;
-    const test = this.http.post(url, credentials);
-    console.log('test', test)
-    return test;
+    return this.http.post(`${this.apiUrl}/login`, credentials)
+      .pipe(
+        map((response: any) => {
+          if (response && response.jwt) {
+            this.setToken(response.jwt);
+          }
+          return response
+        })
+      )
+  }
+
+  register(credentials: { username: string, name: string, password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, credentials)
+      .pipe(
+        map((response: any) => {
+          if (response && response.jwt) {
+            this.setToken(response.jwt);
+          }
+          return response
+        })
+      )
+  }
+
+  logout(): void {
+    sessionStorage.removeItem('jwt');
   }
 }

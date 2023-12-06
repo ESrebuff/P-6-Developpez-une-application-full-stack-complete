@@ -6,7 +6,8 @@
 }
 
 form {
-    width: 280px;
+    max-width: 420px;
+    padding: 10px;
     align-items: center;
 }
 
@@ -15,6 +16,11 @@ input {
     margin-bottom: 30px;
     height: 45px;
     border-radius: 10px;
+}
+
+.rules {
+    position: relative;
+    top: -20px;
 }
 
 button {
@@ -28,4 +34,13 @@ button {
     margin: 0 auto;
     font-weight: bold;
     width: 100px;
+}
+
+.valid-input {
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+}
+
+.valid-rules {
+    color: #4CAF50;
 }

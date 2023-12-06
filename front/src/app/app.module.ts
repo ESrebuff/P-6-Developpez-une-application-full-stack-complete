@@ -23,6 +23,7 @@ import { HeaderPrivateComponent } from './components/header-private/header-priva
 import { ArticleComponent } from './components/article/article.component';
 import { ThemeComponent } from './components/theme/theme.component';
 import { registerLocaleData } from '@angular/common';
+import { httpInterceptorProviders } from './core/interceptors';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ArticlesListComponent, ArticleDetailsComponent, ThemesListComponent, ProfileComponent, CreateArticleComponent, LoginComponent, RegisterComponent, HeaderPublicComponent, HeaderPrivateComponent, ArticleComponent, ThemeComponent],
@@ -38,10 +39,8 @@ import { registerLocaleData } from '@angular/common';
     FormsModule,
   ],
   providers: [
-    {
-      provide: LOCALE_ID,
-      useValue: 'fr-FR'
-    }
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    httpInterceptorProviders
   ],
   bootstrap: [AppComponent],
 })
