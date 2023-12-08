@@ -36,8 +36,7 @@ public class AuthService implements AuthServiceI {
         UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 
         return AuthResponseDto.builder()
-                .token(jwtService.getAccessToken(user))
-                .refreshToken(jwtService.getRefreshToken(user))
+                .jwt(jwtService.getAccessToken(user))
                 .build();
 
     }
@@ -53,8 +52,7 @@ public class AuthService implements AuthServiceI {
 
             userRepository.save(user);
             return AuthResponseDto.builder()
-                    .token(jwtService.getAccessToken(user))
-                    .refreshToken(jwtService.getRefreshToken(user))
+                    .jwt(jwtService.getAccessToken(user))
                     .build();
         }
         return null;
@@ -104,10 +102,8 @@ public class AuthService implements AuthServiceI {
         String newAccessToken = jwtService.getAccessToken(updatedUserDetails);
 
         // Generate a new refresh token
-        String newRefreshToken = jwtService.getRefreshToken(updatedUserDetails);
         return AuthResponseDto.builder()
-                .token(newAccessToken)
-                .refreshToken(newRefreshToken)
+                .jwt(newAccessToken)
                 .build();
     }
 
