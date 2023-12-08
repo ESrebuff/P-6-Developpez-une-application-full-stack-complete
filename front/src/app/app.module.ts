@@ -24,6 +24,7 @@ import { ArticleComponent } from './components/article/article.component';
 import { ThemeComponent } from './components/theme/theme.component';
 import { registerLocaleData } from '@angular/common';
 import { httpInterceptorProviders } from './core/interceptors';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ArticlesListComponent, ArticleDetailsComponent, ThemesListComponent, ProfileComponent, CreateArticleComponent, LoginComponent, RegisterComponent, HeaderPublicComponent, HeaderPrivateComponent, ArticleComponent, ThemeComponent],
@@ -37,6 +38,7 @@ import { httpInterceptorProviders } from './core/interceptors';
     MatIconModule,
     MatMenuModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr-FR' },

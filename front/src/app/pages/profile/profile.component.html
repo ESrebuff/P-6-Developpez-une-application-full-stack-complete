@@ -3,18 +3,45 @@
   <p class="form-name">Profil utilisateur</p>
 
   <div class="form-container">
-    <form>
-      <label for="username"></label>
+    <form #updateUserForm="ngForm" (ngSubmit)="onSubmit(updateUserForm)">
+      <label for="name"></label>
       <input
         class="input-form"
         type="text"
-        id="username"
-        name="username"
+        id="name"
+        name="name"
+        [(ngModel)]="name"
         required
+        (input)="validateName()"
+        [ngClass]="{ 'valid-input': nameValid }"
+      />
+      <label for="email"></label>
+      <input
+        class="input-form"
+        type="text"
+        id="email"
+        name="email"
+        [(ngModel)]="username"
+        required
+        (input)="validateEmail()"
+        [ngClass]="{ 'valid-input': emailValid }"
       />
 
-      <label for="email"></label>
-      <input class="input-form" type="text" id="email" name="email" required />
+      <label for="password"></label>
+      <input
+        class="input-form"
+        type="password"
+        id="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        (input)="validPassword()"
+        [ngClass]="{ 'valid-input': passwordValid }"
+      />
+
+      <ul class="comment" *ngFor="let passwordRule of passwordRules">
+        <li class="comment-auth">{{ passwordRule }}</li>
+      </ul>
 
       <button class="submit" type="submit">Sauvegarder</button>
     </form>

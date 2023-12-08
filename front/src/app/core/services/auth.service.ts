@@ -1,29 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:9000/api/auth';
+  // private apiUrl = 'URL_DE_VOTRE_API';
+  // TODO utiliser des variables d'environement
 
   private token: string | undefined;
 
   constructor(private http: HttpClient) { }
 
   getToken(): string | null {
-    // Récupère le token depuis la session
     return sessionStorage.getItem('jwt');
   }
 
   setToken(token: string): void {
-    // Stocke le token dans la session
     sessionStorage.setItem('jwt', token);
   }
 
   isAuthenticated(): boolean {
-    // Vérifie la présence du token en session
     return this.getToken() !== null;
   }
 
@@ -53,5 +53,9 @@ export class AuthService {
 
   logout(): void {
     sessionStorage.removeItem('jwt');
+  }
+
+  getCurrentUser(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/me`);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class RegisterComponent implements OnInit {
   emailValid: boolean = false;
   nameValid: boolean = false;
   passwordValid: boolean = false;
+  private sub: Subscription |undefined;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -29,7 +31,7 @@ export class RegisterComponent implements OnInit {
         password: this.password
       };
 
-      this.authService.register(credentials).subscribe(
+      this.sub = this.authService.register(credentials).subscribe(
         () => {
           this.router.navigate(['/profile']);
         },
@@ -39,6 +41,7 @@ export class RegisterComponent implements OnInit {
       );
     } else {
         console.error('Erreur d\'authentification');
+        alert("Un problème s'est produit !");
     }
   }
 
@@ -64,6 +67,10 @@ export class RegisterComponent implements OnInit {
       regexUppercase.test(this.password) &&
       regexSpecialChar.test(this.password)
     );
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
 }

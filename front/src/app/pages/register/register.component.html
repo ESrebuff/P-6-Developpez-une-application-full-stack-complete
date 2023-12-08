@@ -8,7 +8,7 @@
       name="name"
       [(ngModel)]="name"
       required
-      (blur)="validateName()"
+      (input)="validateName()"
       [ngClass]="{ 'valid-input': nameValid }"
     />
 
@@ -19,7 +19,7 @@
       name="email"
       [(ngModel)]="username"
       required
-      (blur)="validateEmail()"
+      (input)="validateEmail()"
       [ngClass]="{ 'valid-input': emailValid }"
     />
 
