@@ -1,7 +1,5 @@
 package com.openclassrooms.mddapi.dto;
 
-import com.openclassrooms.mddapi.model.User;
-import com.openclassrooms.mddapi.model.Subject;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -9,8 +7,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubscriptionDto {
-    private Integer id;
-    private User user;
-    private Subject subject;
+    private Integer userId;
+    private Integer subjectId;
     private LocalDateTime subscriptionDate;
 }

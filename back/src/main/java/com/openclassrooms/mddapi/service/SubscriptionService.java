@@ -1,11 +1,17 @@
 package com.openclassrooms.mddapi.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 import com.openclassrooms.mddapi.dto.SubscriptionDto;
 import com.openclassrooms.mddapi.model.Subject;
 import com.openclassrooms.mddapi.model.Subscription;
@@ -28,13 +34,27 @@ public class SubscriptionService implements SubscriptionServiceI {
     @PostConstruct
     public void configureModelMapper() {
         modelMapper.createTypeMap(Subscription.class, SubscriptionDto.class)
-                .addMapping(src -> src.getUser().getId(), SubscriptionDto::setUser)
-                .addMapping(src -> src.getSubject().getId(), SubscriptionDto::setSubject);
+                .addMapping(src -> src.getUser().getId(), SubscriptionDto::setUserId)
+                .addMapping(src -> src.getSubject().getId(), SubscriptionDto::setSubjectId);
 
     }
 
     private SubscriptionDto mapToSubscriptionDto(Subscription subscription) {
         return modelMapper.map(subscription, SubscriptionDto.class);
+    }
+
+    @Override
+    public List<SubscriptionDto> getAllSubscriptions() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Subscription> userSubscriptions = subscriptionRepository.findByUser(user);
+
+        return userSubscriptions.stream()
+                .map(this::mapToSubscriptionDto)
+                .collect(Collectors.toList());
     }
 
     @Override
