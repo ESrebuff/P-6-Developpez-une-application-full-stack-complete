@@ -58,4 +58,16 @@ export class AuthService {
   getCurrentUser(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/me`);
   }
+
+  updateUser(credentials: { username: string | undefined, name: string | undefined, password: string | undefined }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/me`, credentials)
+      .pipe(
+        map((response: any) => {
+          if (response && response.jwt) {
+            this.setToken(response.jwt);
+          }
+          return response;
+        })
+      );
+  }
 }

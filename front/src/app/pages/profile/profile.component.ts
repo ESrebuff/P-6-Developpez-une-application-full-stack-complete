@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { User } from 'src/app/core/interfaces/user.interface';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -10,6 +11,13 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  userInfos: User = {
+    username: '',
+    name: '',
+    id: 0,
+    created_at: '',
+    updated_at: ''
+  }
   username: string = '';
   name: string = '';
   password: string = '';
@@ -36,6 +44,8 @@ export class ProfileComponent implements OnInit {
     this.subs.push(
       this.authService.getCurrentUser().subscribe(
         (userData) => {
+          this.userInfos.username = userData.username;
+          this.userInfos.name = userData.name;
           this.username = userData.username;
           this.name = userData.name;
         },
@@ -47,24 +57,32 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit(registerForm: NgForm): void {
-    if (this.emailValid && this.nameValid && this.passwordValid) {
+    if (this.emailValid || this.nameValid || this.passwordValid) {
+
+      const username = this.userInfos.username === this.username ? undefined : this.username
+      const name = this.userInfos.name === this.name ? undefined : this.name
+
       const credentials = {
-        username: this.username,
-        name: this.name,
-        password: this.password
+        username: username ? username : undefined,
+        name: name ? name : undefined,
+        password: this.password ? this.password : undefined
       };
 
-      this.subs.push(this.authService.register(credentials).subscribe(
+      this.subs.push(this.authService.updateUser(credentials).subscribe(
         () => {
           this.router.navigate(['/profile']);
+          alert("Votre profil à été mis à jour !");
+          this.emailValid = false;
+          this.nameValid = false;
+          this.passwordValid = false;
         },
         (error) => {
+          alert("Essayer avec un autre email");
           console.error('Erreur d\'authentification', error);
         }
       ));
     } else {
-      console.error('Erreur d\'authentification');
-      alert("Un problème s'est produit !");
+      alert("Vous devez modifier ou remplir au minimum un champ pour modifier les informations !");
     }
   }
 
@@ -95,19 +113,19 @@ export class ProfileComponent implements OnInit {
     }
 
     if (!regexDigit.test(this.password)) {
-      this.passwordRules.push('Il doit contenir au moins un chiffre');
+      this.passwordRules.push('Le mot de passe doit contenir au moins un chiffre');
     }
 
     if (!regexLowercase.test(this.password)) {
-      this.passwordRules.push('Il doit contenir au moins une lettre minuscule');
+      this.passwordRules.push('Le mot de passe doit contenir au moins une lettre minuscule');
     }
 
     if (!regexUppercase.test(this.password)) {
-      this.passwordRules.push('Il doit contenir au moins une lettre majuscule');
+      this.passwordRules.push('Le mot de passe doit contenir au moins une lettre majuscule');
     }
 
     if (!regexSpecialChar.test(this.password)) {
-      this.passwordRules.push('Il doit contenir au moins un caractère spécial parmi : !@#$%^&*()-+');
+      this.passwordRules.push('Le mot de passe doit contenir au moins un caractère spécial parmi : !@#$%^&*()-+');
     }
 
     this.passwordValid = this.passwordRules.length === 0;
