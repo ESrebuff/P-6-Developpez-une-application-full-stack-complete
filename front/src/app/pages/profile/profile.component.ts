@@ -130,4 +130,10 @@ export class ProfileComponent implements OnInit {
 
     this.passwordValid = this.passwordRules.length === 0;
   }
+
+  ngOnDestroy(): void {
+    this.subs.forEach(sub => {
+      sub.unsubscribe();
+    });
+  }
 }

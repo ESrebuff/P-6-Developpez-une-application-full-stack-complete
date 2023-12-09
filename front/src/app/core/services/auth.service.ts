@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { User } from '../interfaces/user.interface';
+import { Jwt, User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -27,10 +27,10 @@ export class AuthService {
     return this.getToken() !== null;
   }
 
-  login(credentials: { username: string, password: string }): Observable<any> {
+  login(credentials: { username: string, password: string }): Observable<Jwt> {
     return this.http.post(`${this.apiUrl}/login`, credentials)
       .pipe(
-        map((response: any) => {
+        map((response: Jwt) => {
           if (response && response.jwt) {
             this.setToken(response.jwt);
           }
@@ -39,10 +39,10 @@ export class AuthService {
       )
   }
 
-  register(credentials: { username: string, name: string, password: string }): Observable<any> {
+  register(credentials: { username: string, name: string, password: string }): Observable<Jwt> {
     return this.http.post(`${this.apiUrl}/register`, credentials)
       .pipe(
-        map((response: any) => {
+        map((response: Jwt) => {
           if (response && response.jwt) {
             this.setToken(response.jwt);
           }
@@ -55,15 +55,16 @@ export class AuthService {
     sessionStorage.removeItem('jwt');
   }
 
-  getCurrentUser(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/me`);
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me`);
   }
 
-  updateUser(credentials: { username: string | undefined, name: string | undefined, password: string | undefined }): Observable<any> {
+  updateUser(credentials: { username: string | undefined, name: string | undefined, password: string | undefined }): Observable<Jwt> {
     return this.http.put(`${this.apiUrl}/me`, credentials)
       .pipe(
-        map((response: any) => {
+        map((response: Jwt) => {
           if (response && response.jwt) {
+            console.log('response', response);
             this.setToken(response.jwt);
           }
           return response;
