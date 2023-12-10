@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.SubscriptionDto;
 import com.openclassrooms.mddapi.dto.SubscriptionRequestDto;
+import com.openclassrooms.mddapi.dto.SubscriptionResponseDto;
 import com.openclassrooms.mddapi.service.SubscriptionService;
 import lombok.AllArgsConstructor;
 
@@ -24,16 +25,19 @@ public class SubscriptionController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> subscribe(@RequestBody SubscriptionRequestDto request) {
-        subscriptionService.create(request.getSubjectId());
-        return ResponseEntity.ok("Subscribed successfully");
+    public ResponseEntity<SubscriptionDto> subscribe(@RequestBody SubscriptionRequestDto request) {
+        SubscriptionDto subscriptionDto = subscriptionService.create(request.getSubjectId());
+        return ResponseEntity.ok(subscriptionDto);
     }
 
     @DeleteMapping("{subjectId}")
-    public ResponseEntity<String> unsubscribe(
+    public ResponseEntity<SubscriptionResponseDto> unsubscribe(
             @PathVariable Integer subjectId) {
         subscriptionService.delete(subjectId);
-        return ResponseEntity.ok("Unsubscribed successfully");
+        SubscriptionResponseDto responseDTO = SubscriptionResponseDto.builder()
+        .message("Unsubscribed successfully")
+        .build();
+        return ResponseEntity.ok(responseDTO);
     }
 
 }
