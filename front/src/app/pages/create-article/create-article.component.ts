@@ -1,4 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Observable, Subscription, of } from 'rxjs';
+import { Subject } from 'src/app/core/interfaces/subject.interface';
+import { ArticleService } from 'src/app/core/services/article.service';
+import { SubjectService } from 'src/app/core/services/subject.service';
 
 @Component({
   selector: 'app-create-article',
@@ -6,26 +11,54 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./create-article.component.scss']
 })
 export class CreateArticleComponent implements OnInit {
+  private subs: Subscription[] = [];
+  subjets$: Observable<Subject[]> | undefined;
+  title: string = '';
+  content: string = '';
+  selectedSubjectId: number | undefined;
 
-  themes = [
-    { name: '1 test', id: 1 }, 
-    { name: '2 test', id: 2 }, 
-    { name: '3 test', id: 3 }, 
-    { name: '4 test', id: 4 }, 
-    { name: '5 test', id: 5 }, 
-    { name: '6 test', id: 6 }
-  ]
-  commentText: string = '';
-  @Output() commentSubmitted = new EventEmitter<string>();
-
-  constructor() { }
+  constructor(
+    private subjectService: SubjectService,
+    private articleService: ArticleService,
+  ) { }
 
   ngOnInit(): void {
-    const test = this.themes.unshift({name: 'Selectionner un thème', id: 0})
+    this.subs.push(
+      this.subjectService.getAllSubjects().subscribe(
+        (subjects) => {
+          console.log()
+          this.subjets$ = of(subjects.subjects);
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des themes', error);
+        }
+      )
+    );
   }
 
-  onSubmit(): void {
+  onSubmit(articleForm: NgForm): void {
+    if (this.selectedSubjectId && this.content) {
+      const newArticle = {
+        title: this.title,
+        content: this.content,
+        subjectId: this.selectedSubjectId,
+      };
 
+      this.subs.push(
+        this.articleService.createArticle(newArticle).subscribe(
+          (createdArticle) => {
+            alert('Article créé avec succès');
+            this.title = '';
+            this.content = '';
+            this.selectedSubjectId = undefined;
+            articleForm.resetForm();
+          },
+          (error) => {
+            console.error('Erreur lors de la création de l\'article', error);
+          }
+        )
+      );
+    }
   }
 
 }

@@ -1,4 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Article } from 'src/app/core/interfaces/article.interface';
+import { ArticleService } from 'src/app/core/services/article.service';
 
 @Component({
   selector: 'app-article-details',
@@ -6,64 +10,19 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./article-details.component.scss']
 })
 export class ArticleDetailsComponent implements OnInit {
-
-  article = {
-    id: 1,
-    title: 'title test',
-    content: 'content test',
-    author: {
-      id: 1,
-      username: 'test222@mail.com',
-      name: 'Estebanresr',
-      created_at: '2023-11-21T23:52:20.488364',
-      updated_at: '2023-11-24T00:00:40.942172'
-    },
-    subject: {
-      id: 1,
-      name: 'Science',
-      created_at: '2023-11-22T00:52:01',
-      updated_at: '2023-11-22T00:52:01'
-    },
-    createdAt: '2023-11-21T23:54:34.921577',
-    updatedAt: null,
-    comments: [
-      {
-        id: 1,
-        content: 'content test',
-        author: {
-          id: 1,
-          username: 'test222@mail.com',
-          name: 'Estebanresr',
-          created_at: '2023-11-21T23:52:20.488364',
-          updated_at: '2023-11-24T00:00:40.942172'
-        },
-        createdAt: '2023-11-23T00:43:45.894644',
-        updatedAt: null
-      },
-      {
-        id: 2,
-        content: 'test 2 test',
-        author: {
-          id: 1,
-          username: 'test222@mail.com',
-          name: 'Estebanresr',
-          created_at: '2023-11-21T23:52:20.488364',
-          updated_at: '2023-11-24T00:00:40.942172'
-        },
-        createdAt: '2023-11-23T00:44:21.017977',
-        updatedAt: null
-      }
-    ]
-  }
-
   commentText: string = '';
   @Output() commentSubmitted = new EventEmitter<string>();
+  article$: Observable<Article> | undefined;
 
-  constructor() { }
+  constructor(private articleService: ArticleService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    const articleId = this.route.snapshot.paramMap.get('id');
+    
+    if (articleId) {
+      this.article$ = this.articleService.getArticleById(parseInt(articleId, 10));
+    }
   }
-
 
   onSubmit(): void {
     if (this.commentText.trim() !== '') {

@@ -1,7 +1,7 @@
 <div [routerLink]="['/article/'+ article.id]" class="article">
   <p class="title-article">{{ article.title }}</p>
   <div class="info">
-    <p>{{ article.createdAt }}</p>
+    <p>{{ article.createdAt | date:'shortDate' }}</p>
     <p>{{ article.author.name }}</p>
   </div>
   <p class="article-content">

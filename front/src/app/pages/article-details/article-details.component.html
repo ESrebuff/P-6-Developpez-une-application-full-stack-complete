@@ -1,32 +1,27 @@
 <app-header-private></app-header-private>
 <div class="wrapper">
-  <div class="title-icon-arrow-container">
-    <mat-icon [routerLink]="'/articles'" class="icon-arrow"
-      >keyboard_backspace</mat-icon
-    >
+  <div *ngIf="article$ | async as article" class="title-icon-arrow-container">
+    <mat-icon [routerLink]="'/articles'" class="icon-arrow">keyboard_backspace</mat-icon>
     <p class="title">{{ article.title }}</p>
   </div>
-  <div class="infos">
+  <div *ngIf="article$ | async as article" class="infos">
     <p class="info">{{ article.createdAt }}</p>
     <p class="info">{{ article.author.name }}</p>
     <p class="info">{{ article.subject.name }}</p>
   </div>
-  <p class="contenu">
-    {{ article.content }}
-  </p>
-  <div class="spacer"></div>
-  <p class="comments">Commentaires</p>
-  <div class="comments-container">
+  <p *ngIf="article$ | async as article" class="contenu">{{ article.content }}</p>
+  <div *ngIf="article$ | async as article" class="spacer"></div>
+  <p *ngIf="article$ | async as article" class="comments">Commentaires</p>
+  <div *ngIf="article$ | async as article" class="comments-container">
     <div class="comment" *ngFor="let comment of article.comments">
-        <p class="comment-auth">{{ comment.author.name }}</p>
-        <p class="comment-content">{{ comment.content }}</p>
+      <!-- <p class="comment-auth">{{ comment.author.name }}</p>
+      <p class="comment-content">{{ comment.content }}</p> -->
     </div>
   </div>
-  <form (ngSubmit)="onSubmit()">
+  <form *ngIf="article$ | async as article" (ngSubmit)="onSubmit()">
     <label for="commentText"></label>
     <textarea placeholder="Écrivez ici votre commentaire" id="commentText" name="commentText" [(ngModel)]="commentText" required>
     </textarea>
-  
     <button class="submit" type="submit"><mat-icon class="send-icon">send</mat-icon></button>
   </form>
 </div>

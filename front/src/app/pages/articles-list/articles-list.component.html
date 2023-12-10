@@ -15,8 +15,7 @@
   <div class="articles-container">
     <div class="articles">
       <app-article
-        *ngFor="let article of sortedArticles"
-        [article]="article"
+        *ngFor="let article of articles$ | async" [article]="article"
       ></app-article>
     </div>
   </div>

@@ -7,11 +7,11 @@
     <p class="form-name">Créer un nouvel article</p>
   </div>
   <div class="form-container">
-    <form (ngSubmit)="onSubmit()">
+    <form #articleForm="ngForm" (ngSubmit)="onSubmit(articleForm)">
       <label for="theme-select"></label>
-      <select class="input-form select" name="theme" id="theme-select">
-        <option *ngFor="let theme of themes" [value]="theme.id">
-          {{ theme.name }}
+      <select class="input-form select" name="theme" id="theme-select" [(ngModel)]="selectedSubjectId" required>
+        <option *ngFor="let subjet of subjets$ | async" [value]="subjet.id">
+          {{ subjet.name }}
         </option>
       </select>
 
@@ -23,16 +23,17 @@
         id="title"
         name="title"
         required
+        [(ngModel)]="title"
       />
 
-      <label for="commentText"></label>
+      <label for="content"></label>
       <textarea
         class="input-form text-area"
-        placeholder="Écrivez ici votre commentaire"
-        id="commentText"
-        name="commentText"
+        placeholder="Écrivez ici votre contenu"
+        id="content"
+        name="content"
         required
-        [(ngModel)]="commentText"
+        [(ngModel)]="content"
       >
       </textarea>
 

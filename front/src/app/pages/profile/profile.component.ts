@@ -64,17 +64,6 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  refreshList() {
-    this.subjectService.getSubjectsBySubscriptions().subscribe(
-      (subjects) => {
-        this.subjects$ = of(subjects);
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération des sujets par abonnements', error);
-      }
-    )
-  }
-
   onSubmit(registerForm: NgForm): void {
     if (this.emailValid || this.nameValid || this.passwordValid) {
 

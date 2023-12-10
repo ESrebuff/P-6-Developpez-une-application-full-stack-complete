@@ -12,6 +12,12 @@ export interface Article {
     updatedAt: Date;
 }
 
+export interface ArticleRequest {
+    title: string;
+    content: string;
+    subjectId: number;
+}
+
 export interface Articles {
     articles: Article[];
 }
