@@ -1,8 +1,5 @@
 export interface Subscription {
-    userId: number,
-    SubjectId: number,
-}
-
-export interface Subscriptions {
-    Subscriptions: Subscription[],
+    userId: number;
+    subjectId: number;
+    subscriptionDate: Date;
 }

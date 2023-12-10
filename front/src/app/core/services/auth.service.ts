@@ -23,6 +23,24 @@ export class AuthService {
     sessionStorage.setItem('jwt', token);
   }
 
+  decodeToken(token: string): any {
+    const payload = token.split('.')[1];
+    const decodedPayload = atob(payload);
+    return JSON.parse(decodedPayload);
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken: any = this.decodeToken(token);
+      const expirationDate = new Date(decodedToken.exp * 1000);
+      const currentDate = new Date();
+      return expirationDate <= currentDate;
+    }
+    return true;
+  }
+
+
   isAuthenticated(): boolean {
     return this.getToken() !== null;
   }

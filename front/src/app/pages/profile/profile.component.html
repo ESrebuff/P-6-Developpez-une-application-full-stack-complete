@@ -51,7 +51,16 @@
   <p class="form-name">Abonnements</p>
   <div class="themes-container">
     <div class="themes">
-      <!-- <app-theme *ngFor="let theme of themes" [theme]="theme"></app-theme> -->
+      <div *ngFor="let subject of subjects$ | async">
+        <div class="theme-inner">
+          <p class="title-theme-inner">{{ subject.name }}</p>
+          <div class="button-container-inner">
+            <button class="button-subscribe-inner" (click)="onSubscribeClick(subject)">
+              {{ subject.subscribed ? 'Se désabonner' : "S'abonner" }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

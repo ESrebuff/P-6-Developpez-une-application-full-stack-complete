@@ -1,6 +1,8 @@
 <div class="theme">
   <p class="title-theme">{{ subject.name }}</p>
   <div class="button-container">
-    <button class="button-subscribe">S'abonner</button>
+    <button class="button-subscribe" (click)="onSubscribeClick()">
+      {{ subject.subscribed ? 'Se désabonner' : "S'abonner" }}
+    </button>
   </div>
 </div>

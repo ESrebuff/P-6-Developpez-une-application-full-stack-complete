@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, map, of } from 'rxjs';
+import { Subject } from 'src/app/core/interfaces/subject.interface';
 import { User } from 'src/app/core/interfaces/user.interface';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { SubjectService } from 'src/app/core/services/subject.service';
+import { SubscriptionService } from 'src/app/core/services/subscription.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,20 +29,14 @@ export class ProfileComponent implements OnInit {
   passwordValid: boolean = false;
   passwordRules: string[] = [];
   private subs: Subscription[] = [];
+  subjects$: Observable<Subject[]> | undefined;
 
-  themes = [
-    { title: 'Theme 1', author: 'author' },
-    { title: 'Theme 2', author: 'author' },
-    { title: 'Theme 3', author: 'author' },
-    { title: 'Theme 4', author: 'author' },
-    { title: 'Theme 5', author: 'author' },
-    { title: 'Theme 6', author: 'author' },
-    { title: 'Theme 7', author: 'author' },
-    { title: 'Theme 8', author: 'author' },
-    { title: 'Theme 9', author: 'author' }
-  ];
-  constructor(private authService: AuthService, private router: Router) { }
-
+  constructor(
+    private authService: AuthService,
+    private subjectService: SubjectService,
+    private subscriptionService: SubscriptionService,
+    private router: Router
+  ) { }
   ngOnInit(): void {
     this.subs.push(
       this.authService.getCurrentUser().subscribe(
@@ -54,6 +51,28 @@ export class ProfileComponent implements OnInit {
         }
       )
     );
+
+    this.subs.push(
+      this.subjectService.getSubjectsBySubscriptions().subscribe(
+        (subjects) => {
+          this.subjects$ = of(subjects);
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des sujets par abonnements', error);
+        }
+      )
+    );
+  }
+
+  refreshList() {
+    this.subjectService.getSubjectsBySubscriptions().subscribe(
+      (subjects) => {
+        this.subjects$ = of(subjects);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des sujets par abonnements', error);
+      }
+    )
   }
 
   onSubmit(registerForm: NgForm): void {
@@ -129,6 +148,31 @@ export class ProfileComponent implements OnInit {
     }
 
     this.passwordValid = this.passwordRules.length === 0;
+  }
+
+  onSubscribeClick(subject: Subject): void {
+    if (subject.subscribed === false) {
+      this.subscriptionService.createSubscription(subject.id).subscribe(
+        () => {;
+          subject.subscribed = true;
+        },
+        (error) => {
+          console.error('Erreur lors de l\'abonnement', error);
+        }
+      );
+    } else {
+      this.subscriptionService.deleteSubscription(subject.id).subscribe(
+        () => {
+          subject.subscribed = false;
+          this.subjects$ = this.subjects$?.pipe(
+            map(subjects => subjects.filter(s => s.id !== subject.id))
+          );
+        },
+        (error) => {
+          console.error('Erreur lors du désabonnement', error);
+        }
+      );
+    }
   }
 
   ngOnDestroy(): void {
