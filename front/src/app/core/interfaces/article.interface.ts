@@ -11,3 +11,7 @@ export interface Article {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface Articles {
+    articles: Article[];
+}
