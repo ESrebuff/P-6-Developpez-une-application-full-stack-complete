@@ -1,3 +1,7 @@
+-- Delete all tables
+CREATE DATABASE mdd;
+USE mdd;
+
 CREATE TABLE `USERS` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
@@ -29,7 +33,6 @@ CREATE TABLE `ARTICLES` (
     content TEXT NOT NULL,
     subject_id INT,
     author_id INT,
-    publication_date DATETIME NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     FOREIGN KEY (subject_id) REFERENCES Subjects(id),
@@ -41,9 +44,17 @@ CREATE TABLE `COMMENTS` (
     content TEXT NOT NULL,
     article_id INT,
     author_id INT,
-    publication_date DATETIME NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     FOREIGN KEY (article_id) REFERENCES Articles(id),
     FOREIGN KEY (author_id) REFERENCES Users(id)
 );
+
+
+
+INSERT INTO SUBJECTS (name, created_at, updated_at) VALUES
+('Intelligence Artificielle (IA)', NOW(), NOW()),
+('Développement Logiciel', NOW(), NOW()),
+('Sécurité Informatique', NOW(), NOW()),
+('Réseaux et Systèmes', NOW(), NOW()),
+('Base de Données', NOW(), NOW());

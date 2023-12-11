@@ -1,25 +1,58 @@
-# P6-Full-Stack-reseau-dev
+# MDD APP (Monde de Dév)
 
-## Front
+The MDD (Developer's World) social network! Designed specifically for developers, MDD aims to revolutionize professional networking by connecting like-minded individuals and fostering collaboration. The MVP (Minimum Viable Product) is underway, allowing users to subscribe to programming topics, share articles, and engage in discussions.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+# Built With
 
-Don't forget to install your node_modules before starting (`npm install`).
+This section show the list of any major frameworks/libraries used in the project. Here are a few examples.
 
-### Development server
+- Angular
+- material ui
+- spring boot
+- spring security
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Requirements
 
-### Build
+Before installing and running the MDD app, make sure you have the following requirements installed on your machine:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- JAVA 17
+- NodeJS 18
+- MySQL Server 8
 
-### Where to start
+## Installation
 
-As you may have seen if you already started the app, a simple home page containing a logo, a title and a button is available. If you take a look at its code (in the `home.component.html`) you will see that an external UI library is already configured in the project.
+To install and run the app, follow these steps:
 
-This library is `@angular/material`, it's one of the most famous in the angular ecosystem. As you can see on their docs (https://material.angular.io/), it contains a lot of highly customizable components that will help you design your interfaces quickly.
+Clone the entire project : [https://github.com/ESrebuff/P-6-Developpez-une-application-full-stack-complete.git](https://github.com/ESrebuff/P-6-Developpez-une-application-full-stack-complete.git)
 
-Note: I recommend to use material however it's not mandatory, if you prefer you can get ride of it.
+A) **_IN THE BACKEND DIRECTORY_**
 
-Good luck!
+1.  Set up a MySQL Server and run the script.sql
+
+2.  data-credential:
+
+    a. Configure your env.properties
+    - create your env.properties at root and  add the following
+
+        ```
+        spring.jpa.hibernate.ddl-auto=update
+        spring.datasource.url=jdbc:mysql:YOUR_URL_TO_YOUR_DB/mdd?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+        spring.datasource.username=YOUR_DB_USERNAME
+        spring.datasource.password=YOUR_DB_PASSWORD
+        spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+        spring.jpa.show-sql=true
+        server.port=YOUR_PORT
+        secret-key=YOUR_SECRET_KEY
+        ```
+    b. Run the following command:
+    mvn spring-boot:run
+
+A) ___IN THE FRONTEND DIRECTORY___
+
+2. Install NPM packages
+
+        npm install
+
+3. Start or run the project 
+        
+        ng start

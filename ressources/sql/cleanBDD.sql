@@ -54,8 +54,8 @@ CREATE TABLE `COMMENTS` (
 
 
 INSERT INTO SUBJECTS (name, created_at, updated_at) VALUES
-('Science', NOW(), NOW()),
-('Voyages', NOW(), NOW()),
-('Cuisine', NOW(), NOW()),
-('Histoire', NOW(), NOW()),
-('Forme Physique', NOW(), NOW());
+('Intelligence Artificielle (IA)', NOW(), NOW()),
+('Développement Logiciel', NOW(), NOW()),
+('Sécurité Informatique', NOW(), NOW()),
+('Réseaux et Systèmes', NOW(), NOW()),
+('Base de Données', NOW(), NOW());
