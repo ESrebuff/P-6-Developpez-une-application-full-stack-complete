@@ -2,12 +2,13 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Article, ArticleRequest, Articles } from "../interfaces/article.interface";
+import { API_BASE_URL } from "src/app/app-config";
 
 @Injectable({
     providedIn: 'root',
 })
 export class ArticleService {
-    private apiUrl = 'http://localhost:9000/api/article';
+    private apiUrl = `${API_BASE_URL}/article`;
 
     constructor(private http: HttpClient) { }
 

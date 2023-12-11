@@ -5,13 +5,14 @@ import { switchMap, map } from 'rxjs/operators';
 import { Subject, Subjects } from '../interfaces/subject.interface';
 import { SubscriptionService } from './subscription.service';
 import { Subscription } from '../interfaces/subscription.interface';
+import { API_BASE_URL } from 'src/app/app-config';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class SubjectService {
-  private apiUrl = 'http://localhost:9000/api/subject';
+  private apiUrl = `${API_BASE_URL}/subject`;
 
   constructor(private http: HttpClient, private subscriptionService: SubscriptionService) {}
 

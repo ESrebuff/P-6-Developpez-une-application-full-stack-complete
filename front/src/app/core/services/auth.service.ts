@@ -2,14 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Jwt, User } from '../interfaces/user.interface';
+import { API_BASE_URL } from 'src/app/app-config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:9000/api/auth';
-  // private apiUrl = 'URL_DE_VOTRE_API';
-  // TODO utiliser des variables d'environement
+  private apiUrl = `${API_BASE_URL}/auth`;
 
   private token: string | undefined;
 
