@@ -1,10 +1,10 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.dto.CommentDto;
 import com.openclassrooms.mddapi.dto.CommentRequestDto;
+import com.openclassrooms.mddapi.dto.CommentResponseDto;
 
 public interface CommentServiceI {
     
-    CommentDto create(CommentRequestDto commentRequestDto);
+    CommentResponseDto create(CommentRequestDto commentRequestDto);
 
 }
