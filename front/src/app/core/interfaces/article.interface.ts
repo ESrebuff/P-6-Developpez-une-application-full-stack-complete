@@ -1,3 +1,4 @@
+import { Comment } from "./comment.interface";
 import { Subject } from "./subject.interface";
 import { User } from "./user.interface";
 

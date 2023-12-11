@@ -13,14 +13,14 @@
   <div *ngIf="article$ | async as article" class="spacer"></div>
   <p *ngIf="article$ | async as article" class="comments">Commentaires</p>
   <div *ngIf="article$ | async as article" class="comments-container">
-    <div class="comment" *ngFor="let comment of article.comments">
-      <!-- <p class="comment-auth">{{ comment.author.name }}</p>
-      <p class="comment-content">{{ comment.content }}</p> -->
+    <div class="comment" *ngFor="let comment of comments">
+      <p class="comment-auth">{{ comment.author!.name }}</p>
+      <p class="comment-content">{{ comment.content }}</p>
     </div>
   </div>
-  <form *ngIf="article$ | async as article" (ngSubmit)="onSubmit()">
+  <form #commentForm="ngForm" *ngIf="article$ | async as article" (ngSubmit)="onSubmit(commentForm)">
     <label for="commentText"></label>
-    <textarea placeholder="Écrivez ici votre commentaire" id="commentText" name="commentText" [(ngModel)]="commentText" required>
+    <textarea placeholder="Écrivez ici votre commentaire" id="commentText" name="commentText" [(ngModel)]="content" required>
     </textarea>
     <button class="submit" type="submit"><mat-icon class="send-icon">send</mat-icon></button>
   </form>

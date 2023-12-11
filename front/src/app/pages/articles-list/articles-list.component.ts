@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subscription, map, of } from 'rxjs';
+import { Observable, map, of, take } from 'rxjs';
 import { Article } from 'src/app/core/interfaces/article.interface';
 import { ArticleService } from 'src/app/core/services/article.service';
 
@@ -9,22 +9,21 @@ import { ArticleService } from 'src/app/core/services/article.service';
   styleUrls: ['./articles-list.component.scss']
 })
 export class ArticlesListComponent implements OnInit {
-  private subs: Subscription[] = [];
   articles$: Observable<Article[]> | undefined;
 
   constructor(private articleService: ArticleService) { }
 
   ngOnInit(): void {
-    this.subs.push(
-      this.articleService.getAllArticles().subscribe(
+    this.articleService.getAllArticles()
+      .pipe(take(1))
+      .subscribe(
         (articles) => {
           this.articles$ = of(articles);
         },
         (error) => {
           console.error('Erreur lors de la récupération des articles', error);
         }
-      )
-    );
+      );
   }
 
   sortArticlesByChronological() {
@@ -44,15 +43,15 @@ export class ArticlesListComponent implements OnInit {
   }
 
   sortArticlesByDefault() {
-    this.subs.push(
-      this.articleService.getAllArticles().subscribe(
+    this.articleService.getAllArticles()
+      .pipe(take(1))
+      .subscribe(
         (articles) => {
           this.articles$ = of(articles);
         },
         (error) => {
           console.error('Erreur lors de la récupération des articles', error);
         }
-      )
-    );
+      );
   }
 }

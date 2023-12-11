@@ -13,7 +13,7 @@ import { Subscription } from '../interfaces/subscription.interface';
 export class SubjectService {
   private apiUrl = 'http://localhost:9000/api/subject';
 
-  constructor(private http: HttpClient, private subscriptionService: SubscriptionService) { }
+  constructor(private http: HttpClient, private subscriptionService: SubscriptionService) {}
 
   getAllSubjects(): Observable<Subjects> {
     return this.http.get<Subjects>(this.apiUrl);

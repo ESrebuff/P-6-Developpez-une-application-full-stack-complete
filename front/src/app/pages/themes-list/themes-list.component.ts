@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'src/app/core/interfaces/subject.interface';
 import { SubjectService } from '../../core/services/subject.service';
-import { Observable, map } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-themes-list',
@@ -14,7 +14,7 @@ export class ThemesListComponent implements OnInit {
   constructor(private subjectService: SubjectService) { }
 
   ngOnInit(): void {
-    this.subjects$ = this.subjectService.getAllSubjectsWithSubscriptionStatus();
+    this.subjects$ = this.subjectService.getAllSubjectsWithSubscriptionStatus().pipe(take(1));
   }
 
 }

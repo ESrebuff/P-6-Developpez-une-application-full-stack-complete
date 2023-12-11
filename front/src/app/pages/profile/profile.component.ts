@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, Subscription, map, of } from 'rxjs';
+import { Observable, map, of, take } from 'rxjs';
 import { Subject } from 'src/app/core/interfaces/subject.interface';
 import { User } from 'src/app/core/interfaces/user.interface';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -28,7 +28,6 @@ export class ProfileComponent implements OnInit {
   nameValid: boolean = false;
   passwordValid: boolean = false;
   passwordRules: string[] = [];
-  private subs: Subscription[] = [];
   subjects$: Observable<Subject[]> | undefined;
 
   constructor(
@@ -38,8 +37,9 @@ export class ProfileComponent implements OnInit {
     private router: Router
   ) { }
   ngOnInit(): void {
-    this.subs.push(
-      this.authService.getCurrentUser().subscribe(
+    this.authService.getCurrentUser()
+      .pipe(take(1))
+      .subscribe(
         (userData) => {
           this.userInfos.username = userData.username;
           this.userInfos.name = userData.name;
@@ -49,19 +49,18 @@ export class ProfileComponent implements OnInit {
         (error) => {
           console.error('Erreur d\'authentification', error);
         }
-      )
-    );
+      );
 
-    this.subs.push(
-      this.subjectService.getSubjectsBySubscriptions().subscribe(
+    this.subjectService.getSubjectsBySubscriptions()
+      .pipe(take(1))
+      .subscribe(
         (subjects) => {
           this.subjects$ = of(subjects);
         },
         (error) => {
           console.error('Erreur lors de la récupération des sujets par abonnements', error);
         }
-      )
-    );
+      );
   }
 
   onSubmit(registerForm: NgForm): void {
@@ -76,19 +75,21 @@ export class ProfileComponent implements OnInit {
         password: this.password ? this.password : undefined
       };
 
-      this.subs.push(this.authService.updateUser(credentials).subscribe(
-        () => {
-          this.router.navigate(['/profile']);
-          alert("Votre profil à été mis à jour !");
-          this.emailValid = false;
-          this.nameValid = false;
-          this.passwordValid = false;
-        },
-        (error) => {
-          alert("Essayer avec un autre email");
-          console.error('Erreur d\'authentification', error);
-        }
-      ));
+      this.authService.updateUser(credentials)
+        .pipe(take(1))
+        .subscribe(
+          () => {
+            this.router.navigate(['/profile']);
+            alert("Votre profil à été mis à jour !");
+            this.emailValid = false;
+            this.nameValid = false;
+            this.passwordValid = false;
+          },
+          (error) => {
+            alert("Essayer avec un autre email");
+            console.error('Erreur d\'authentification', error);
+          }
+        );
     } else {
       alert("Vous devez modifier ou remplir au minimum un champ pour modifier les informations !");
     }
@@ -140,17 +141,9 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubscribeClick(subject: Subject): void {
-    if (subject.subscribed === false) {
-      this.subscriptionService.createSubscription(subject.id).subscribe(
-        () => {;
-          subject.subscribed = true;
-        },
-        (error) => {
-          console.error('Erreur lors de l\'abonnement', error);
-        }
-      );
-    } else {
-      this.subscriptionService.deleteSubscription(subject.id).subscribe(
+    this.subscriptionService.deleteSubscription(subject.id)
+      .pipe(take(1))
+      .subscribe(
         () => {
           subject.subscribed = false;
           this.subjects$ = this.subjects$?.pipe(
@@ -161,12 +154,6 @@ export class ProfileComponent implements OnInit {
           console.error('Erreur lors du désabonnement', error);
         }
       );
-    }
   }
 
-  ngOnDestroy(): void {
-    this.subs.forEach(sub => {
-      sub.unsubscribe();
-    });
-  }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { take } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -16,7 +16,6 @@ export class RegisterComponent implements OnInit {
   emailValid: boolean = false;
   nameValid: boolean = false;
   passwordValid: boolean = false;
-  private sub: Subscription |undefined;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -31,7 +30,9 @@ export class RegisterComponent implements OnInit {
         password: this.password
       };
 
-      this.sub = this.authService.register(credentials).subscribe(
+      this.authService.register(credentials)
+      .pipe(take(1))
+      .subscribe(
         () => {
           this.router.navigate(['/profile']);
         },
@@ -67,10 +68,6 @@ export class RegisterComponent implements OnInit {
       regexUppercase.test(this.password) &&
       regexSpecialChar.test(this.password)
     );
-  }
-
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
   }
 
 }

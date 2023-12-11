@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription, of, take } from 'rxjs';
 import { Subject } from 'src/app/core/interfaces/subject.interface';
 import { ArticleService } from 'src/app/core/services/article.service';
 import { SubjectService } from 'src/app/core/services/subject.service';
@@ -23,17 +23,16 @@ export class CreateArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.subs.push(
-      this.subjectService.getAllSubjects().subscribe(
+    this.subjectService.getAllSubjects()
+      .pipe(take(1))
+      .subscribe(
         (subjects) => {
-          console.log()
           this.subjets$ = of(subjects.subjects);
         },
         (error) => {
           console.error('Erreur lors de la récupération des themes', error);
         }
-      )
-    );
+      );
   }
 
   onSubmit(articleForm: NgForm): void {
@@ -43,9 +42,9 @@ export class CreateArticleComponent implements OnInit {
         content: this.content,
         subjectId: this.selectedSubjectId,
       };
-
-      this.subs.push(
-        this.articleService.createArticle(newArticle).subscribe(
+      this.articleService.createArticle(newArticle)
+        .pipe(take(1))
+        .subscribe(
           (createdArticle) => {
             alert('Article créé avec succès');
             this.title = '';
@@ -56,8 +55,7 @@ export class CreateArticleComponent implements OnInit {
           (error) => {
             console.error('Erreur lors de la création de l\'article', error);
           }
-        )
-      );
+        );
     }
   }
 
