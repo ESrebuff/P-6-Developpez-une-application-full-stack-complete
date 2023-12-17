@@ -10,8 +10,6 @@ import { API_BASE_URL } from 'src/app/app-config';
 export class AuthService {
   private apiUrl = `${API_BASE_URL}/auth`;
 
-  private token: string | undefined;
-
   constructor(private http: HttpClient) { }
 
   getToken(): string | null {
