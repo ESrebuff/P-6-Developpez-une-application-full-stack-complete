@@ -28,7 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String accessToken = getAccessTokenFromRequest(request);
-        final String refreshToken = getRefreshTokenFromRequest(request);
         final String username;
 
         if (accessToken == null) {
@@ -50,15 +49,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-
-                if (jwtService.isTokenAboutToExpire(accessToken)) {
-                    if (StringUtils.hasText(refreshToken) && jwtService.isTokenValid(refreshToken, userDetails)) {
-                        if (userDetails != null && jwtService.isTokenValid(refreshToken, userDetails)) {
-                            String newToken = jwtService.getAccessToken(userDetails);
-                            response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + newToken);
-                        }
-                    }
-                }
             }
 
         }
@@ -71,15 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
-        }
-        return null;
-    }
-
-    private String getRefreshTokenFromRequest(HttpServletRequest request) {
-        final String refreshTokenHeader = request.getHeader("Refresh-Token");
-
-        if (StringUtils.hasText(refreshTokenHeader)) {
-            return refreshTokenHeader;
         }
         return null;
     }
