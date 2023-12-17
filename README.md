@@ -18,6 +18,7 @@ Before installing and running the MDD app, make sure you have the following requ
 - JAVA 17
 - NodeJS 18
 - MySQL Server 8
+- Angular 17
 
 ## Installation
 
