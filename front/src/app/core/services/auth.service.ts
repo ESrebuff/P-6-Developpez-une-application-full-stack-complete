@@ -79,7 +79,6 @@ export class AuthService {
       .pipe(
         map((response: Jwt) => {
           if (response && response.jwt) {
-            console.log('response', response);
             this.setToken(response.jwt);
           }
           return response;
