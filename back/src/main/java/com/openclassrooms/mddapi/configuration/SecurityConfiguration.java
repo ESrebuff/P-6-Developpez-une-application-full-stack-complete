@@ -13,6 +13,9 @@ import com.openclassrooms.mddapi.security.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Configuration class for security settings in the application.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -21,6 +24,13 @@ public class SecurityConfiguration {
         private final JwtAuthenticationFilter jwtAuthenticationFilter;
         private final AuthenticationProvider authProvider;
 
+        /**
+         * Configures the security filter chain for the application.
+         *
+         * @param http The HttpSecurity object to configure.
+         * @return The configured SecurityFilterChain.
+         * @throws Exception If an error occurs during configuration.
+         */
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
@@ -38,6 +48,5 @@ public class SecurityConfiguration {
                                 .authenticationProvider(authProvider)
                                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();
-
         }
 }

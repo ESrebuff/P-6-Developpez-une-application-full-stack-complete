@@ -4,14 +4,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 import com.openclassrooms.mddapi.dto.SubjectDto;
 import com.openclassrooms.mddapi.model.Subject;
 import com.openclassrooms.mddapi.repository.SubjectRepository;
+
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 
+/**
+ * Service class for managing subjects in the application.
+ */
 @Service
 @AllArgsConstructor
 public class SubjectService implements SubjectServiceI {
@@ -19,6 +25,9 @@ public class SubjectService implements SubjectServiceI {
     private final SubjectRepository subjectRepository;
     private final ModelMapper modelMapper;
 
+    /**
+     * Configures ModelMapper for mapping Subject to SubjectDto.
+     */
     @PostConstruct
     public void configureModelMapper() {
         modelMapper.createTypeMap(Subject.class, SubjectDto.class)
@@ -26,10 +35,11 @@ public class SubjectService implements SubjectServiceI {
                 .addMapping(Subject::getUpdatedAt, SubjectDto::setUpdated_at);
     }
 
-    private SubjectDto mapToSubjectDto(Subject subject) {
-        return modelMapper.map(subject, SubjectDto.class);
-    }
-
+    /**
+     * Retrieves all subjects and organizes them in a map.
+     *
+     * @return Map containing a list of SubjectDto objects under the key "subjects".
+     */
     @Override
     public Map<String, List<SubjectDto>> getSubjects() {
         List<Subject> subjects = subjectRepository.findAll();
@@ -43,6 +53,12 @@ public class SubjectService implements SubjectServiceI {
         return response;
     }
 
+    /**
+     * Retrieves a subject by its ID.
+     *
+     * @param id The ID of the subject to retrieve.
+     * @return SubjectDto representing the retrieved subject, or null if not found.
+     */
     @Override
     public SubjectDto getSubject(Integer id) {
         Subject subject = subjectRepository.findById(id).orElse(null);
@@ -52,4 +68,7 @@ public class SubjectService implements SubjectServiceI {
         return null;
     }
 
+    private SubjectDto mapToSubjectDto(Subject subject) {
+        return modelMapper.map(subject, SubjectDto.class);
+    }
 }

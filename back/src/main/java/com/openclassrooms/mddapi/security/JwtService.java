@@ -15,16 +15,32 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * Service class for managing JWT (JSON Web Token) generation and validation.
+ */
 @Service
 public class JwtService {
 
     @Value("${secret-key}")
     private String SECRET_KEY;
 
+    /**
+     * Generates an access token for the given user with default claims.
+     *
+     * @param user The UserDetails object representing the user.
+     * @return The generated access token.
+     */
     public String getAccessToken(UserDetails user) {
         return getAccessToken(new HashMap<>(), user);
     }
 
+    /**
+     * Generates an access token for the given user with additional claims.
+     *
+     * @param extraClaims Additional claims to include in the token.
+     * @param user        The UserDetails object representing the user.
+     * @return The generated access token.
+     */
     private String getAccessToken(Map<String, Object> extraClaims, UserDetails user) {
         return Jwts
                 .builder()
@@ -36,6 +52,12 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * Generates a refresh token for the given user.
+     *
+     * @param user The UserDetails object representing the user.
+     * @return The generated refresh token.
+     */
     public String getRefreshToken(UserDetails user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
@@ -45,20 +67,34 @@ public class JwtService {
                 .compact();
     }
 
-    private Key getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
+    /**
+     * Retrieves the username from a given token.
+     *
+     * @param token The JWT token.
+     * @return The username extracted from the token.
+     */
     public String getUsernameFromToken(String token) {
         return getClaim(token, Claims::getSubject);
     }
 
+    /**
+     * Checks if a token is valid for the given user.
+     *
+     * @param token       The JWT token.
+     * @param userDetails The UserDetails object representing the user.
+     * @return True if the token is valid for the user, otherwise false.
+     */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+    /**
+     * Parses and retrieves all claims from a given token.
+     *
+     * @param token The JWT token.
+     * @return The Claims object containing all claims from the token.
+     */
     private Claims getAllClaims(String token) {
         return Jwts
                 .parserBuilder()
@@ -68,19 +104,46 @@ public class JwtService {
                 .getBody();
     }
 
+    /**
+     * Retrieves a specific claim from a given token.
+     *
+     * @param token          The JWT token.
+     * @param claimsResolver The function to extract a specific claim from the
+     *                       Claims object.
+     * @param <T>            The type of the claim.
+     * @return The specific claim extracted from the token.
+     */
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    /**
+     * Retrieves the expiration date from a given token.
+     *
+     * @param token The JWT token.
+     * @return The expiration date of the token.
+     */
     private Date getExpiration(String token) {
         return getClaim(token, Claims::getExpiration);
     }
 
+    /**
+     * Checks if a token has expired.
+     *
+     * @param token The JWT token.
+     * @return True if the token has expired, otherwise false.
+     */
     private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
     }
 
+    /**
+     * Checks if a token is about to expire within the next 30 minutes.
+     *
+     * @param token The JWT token.
+     * @return True if the token is about to expire, otherwise false.
+     */
     public boolean isTokenAboutToExpire(String token) {
         final Date expiration = getExpiration(token);
         final long expirationInMillis = expiration.getTime();
@@ -91,4 +154,13 @@ public class JwtService {
         return expirationInMillis - currentTimeInMillis <= thresholdInMillis;
     }
 
+    /**
+     * Retrieves the key used for signing JWT tokens.
+     *
+     * @return The Key object used for signing.
+     */
+    private Key getKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 }

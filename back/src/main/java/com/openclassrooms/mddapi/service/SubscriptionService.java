@@ -20,6 +20,9 @@ import com.openclassrooms.mddapi.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 
+/**
+ * Service class for managing user subscriptions to subjects in the application.
+ */
 @Service
 @AllArgsConstructor
 public class SubscriptionService implements SubscriptionServiceI {
@@ -29,18 +32,21 @@ public class SubscriptionService implements SubscriptionServiceI {
     private final ModelMapper modelMapper;
     private final SubjectService subjectService;
 
+    /**
+     * Configures ModelMapper for mapping Subscription to SubscriptionDto.
+     */
     @PostConstruct
     public void configureModelMapper() {
         modelMapper.createTypeMap(Subscription.class, SubscriptionDto.class)
                 .addMapping(src -> src.getUser().getId(), SubscriptionDto::setUserId)
                 .addMapping(src -> src.getSubject().getId(), SubscriptionDto::setSubjectId);
-
     }
 
-    private SubscriptionDto mapToSubscriptionDto(Subscription subscription) {
-        return modelMapper.map(subscription, SubscriptionDto.class);
-    }
-
+    /**
+     * Retrieves all subscriptions for the currently authenticated user.
+     *
+     * @return List of SubscriptionDto objects representing user subscriptions.
+     */
     @Override
     public List<SubscriptionDto> getAllSubscriptions() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,6 +61,13 @@ public class SubscriptionService implements SubscriptionServiceI {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Creates a new subscription for the currently authenticated user to a
+     * specified subject.
+     *
+     * @param subjectId The ID of the subject to subscribe to.
+     * @return SubscriptionDto representing the created subscription.
+     */
     @Override
     public SubscriptionDto create(Integer subjectId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -71,6 +84,12 @@ public class SubscriptionService implements SubscriptionServiceI {
         return mapToSubscriptionDto(savedSubscription);
     }
 
+    /**
+     * Deletes a subscription for the currently authenticated user to a specified
+     * subject.
+     *
+     * @param subjectId The ID of the subject to unsubscribe from.
+     */
     @Override
     public void delete(Integer subjectId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -82,5 +101,9 @@ public class SubscriptionService implements SubscriptionServiceI {
         subscriptionId.setUser(user.getId());
         subscriptionId.setSubject(subjectId);
         subscriptionRepository.deleteById(subscriptionId);
+    }
+
+    private SubscriptionDto mapToSubscriptionDto(Subscription subscription) {
+        return modelMapper.map(subscription, SubscriptionDto.class);
     }
 }

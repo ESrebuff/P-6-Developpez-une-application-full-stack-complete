@@ -20,22 +20,42 @@ import com.openclassrooms.mddapi.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Configuration class for the application.
+ */
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfiguration {
 
     private final UserRepository userRepository;
 
+    /**
+     * Configures and provides a ModelMapper bean.
+     *
+     * @return The configured ModelMapper bean.
+     */
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
+    /**
+     * Configures and provides an AuthenticationManager bean.
+     *
+     * @param config The AuthenticationConfiguration to use.
+     * @return The configured AuthenticationManager bean.
+     * @throws Exception If an error occurs while configuring the AuthenticationManager.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Configures and provides an AuthenticationProvider bean using DaoAuthenticationProvider.
+     *
+     * @return The configured AuthenticationProvider bean.
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -44,17 +64,32 @@ public class ApplicationConfiguration {
         return authenticationProvider;
     }
 
+    /**
+     * Configures and provides a PasswordEncoder bean (BCryptPasswordEncoder).
+     *
+     * @return The configured PasswordEncoder bean.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures and provides a UserDetailsService bean.
+     *
+     * @return The configured UserDetailsService bean.
+     */
     @Bean
     public UserDetailsService userDetailService() {
         return username -> userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not fournd"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    /**
+     * Configures and provides a WebMvcConfigurer bean for CORS (Cross-Origin Resource Sharing).
+     *
+     * @return The configured WebMvcConfigurer bean.
+     */
     @Bean
     public WebMvcConfigurer corsConfig() {
         return new WebMvcConfigurer() {

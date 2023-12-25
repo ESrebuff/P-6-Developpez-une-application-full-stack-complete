@@ -10,6 +10,9 @@ import com.openclassrooms.mddapi.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 
+/**
+ * Service class for managing user-related operations in the application.
+ */
 @Service
 @AllArgsConstructor
 public class UserService implements UserServiceI {
@@ -17,6 +20,9 @@ public class UserService implements UserServiceI {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
+    /**
+     * Configures ModelMapper for mapping User to UserDto.
+     */
     @PostConstruct
     public void configureModelMapper() {
         modelMapper.createTypeMap(User.class, UserDto.class)
@@ -26,10 +32,12 @@ public class UserService implements UserServiceI {
                 .addMapping(User::getUpdatedAt, UserDto::setUpdated_at);
     }
 
-    private UserDto mapToUserDto(User user) {
-        return modelMapper.map(user, UserDto.class);
-    }
-
+    /**
+     * Retrieves a user by their ID and maps it to a UserDto.
+     *
+     * @param id The ID of the user to retrieve.
+     * @return UserDto representing the retrieved user, or null if not found.
+     */
     @Override
     public UserDto getUserById(Integer id) {
         User user = userRepository.findById(id).orElse(null);
@@ -40,6 +48,12 @@ public class UserService implements UserServiceI {
         }
     }
 
+    /**
+     * Retrieves the currently authenticated user and maps it to a UserDto.
+     *
+     * @return UserDto representing the currently authenticated user, or null if not
+     *         found.
+     */
     @Override
     public UserDto getCurrentUser() {
         // Retrieve the currently authenticated user's username
@@ -57,4 +71,7 @@ public class UserService implements UserServiceI {
         }
     }
 
+    private UserDto mapToUserDto(User user) {
+        return modelMapper.map(user, UserDto.class);
+    }
 }
