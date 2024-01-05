@@ -53,21 +53,6 @@ public class JwtService {
     }
 
     /**
-     * Generates a refresh token for the given user.
-     *
-     * @param user The UserDetails object representing the user.
-     * @return The generated refresh token.
-     */
-    public String getRefreshToken(UserDetails user) {
-        return Jwts.builder()
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 30)) // 30 days
-                .signWith(getKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    /**
      * Retrieves the username from a given token.
      *
      * @param token The JWT token.
