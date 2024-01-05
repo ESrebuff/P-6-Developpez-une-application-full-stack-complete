@@ -11,9 +11,6 @@ import { RegisterComponent } from './pages/register/register.component';
 import { PrivateGuard } from './core/guards/private.guards';
 import { PublicGuard } from './core/guards/public.guards';
 
-
-// consider a guard combined with canLoad / canActivate route option
-// to manage unauthenticated user to access private routes
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [PublicGuard] },
   { path: 'login', component: LoginComponent, canActivate: [PublicGuard] },
